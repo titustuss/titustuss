@@ -15,8 +15,10 @@ export default function PlacesFormPage (){
     const [extraInfo, setExtraInfo]= useState('');
     const [price,setPrice] = useState(1000);
     const [fileInputState, setFileInputState] = useState();
-    const [previewSource ,setPreviewSource] = useState();
+    const [previewSources ,setPreviewSources] = useState([]);
     const [redirect,setRedirect]= useState(false);
+    const [uploadedPhotos, setUploadedPhotos] = useState([]);
+
 
     useEffect(()=>{
         if(!id){
@@ -65,39 +67,49 @@ export default function PlacesFormPage (){
         setPhotoLink('');
     }
   
-// upload by file
-const uploadPhoto = (e) => {
-    const file = e.target.files[0];
-    previewFile(file);
-  };
 
-  const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreviewSource(prev => [...prev, reader.result]); // Append the new previewSource to the existing array
-    };
-  };
+    // upload using file
+    const uploadPhoto = (e) => {
+        const files = e.target.files;
+        const photoArray = Array.from(files);
+    
+    // Preview and upload each file in the array
+        photoArray.forEach(previewAndUploadFile);
+      };
+    
+      const previewAndUploadFile = (file) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onloadend = () => {
+          const base64EncodedImage = reader.result;
+          setPreviewSources((prev) => [...prev, base64EncodedImage]); // Append the new previewSource to the existing array
+        };
+      };
+    
+      const handleSubmitFile = async (e) => {
+        console.log("submitting")
+        e.preventDefault();
+    
+        // Upload all the previewed photos
+        await Promise.all(previewSources.map(uploadImage));
+    
+        // Clear the previewed photos after uploading
+        setPreviewSources([]);
+      };
+    
+      const uploadImage = async (base64EncodedImage) => {
+        try {
+          const response = await axios.post('/upload', { data: base64EncodedImage }, {
+            headers: { 'Content-type': 'application/json' }
+          });
+          console.log('Image uploaded successfully.');
+          setUploadedPhotos((prev) => [...prev, response.data.imageUrl]);
+        } catch (error) {
+          console.error(error);
+        }
+      };
 
-  const handleSubmitFile = async (e) => {
-    e.preventDefault();
-    await uploadImage(previewSource[previewSource.length - 1]); // Pass the last added previewSource
-  };
 
-  const uploadImage = async (base64EncodedImage) => {
-    try {
-      const response = await axios.post('/upload', { data: base64EncodedImage }, {
-        headers: { 'Content-type': 'application/json' }
-      });
-      console.log('Image uploaded successfully.');
-      
-      // You can still update the previewSource state with the new filename if needed
-      // const { data: filename } = response.data;
-      // setPreviewSource(prev => [...prev, filename]);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
     async function savePlace(e){
         e.preventDefault();
@@ -138,7 +150,7 @@ const uploadPhoto = (e) => {
     return(
         <div>
             <AccountNav/>
-        <form onSubmit={savePlace}>
+        <form onSubmit={handleSubmitFile}>
             {preInput('Title','Title for your property, should be short and catchy')}
                 <input type="text" value={title} onChange={e=>setTitle(e.target.value)} placeholder="title"/>
 
@@ -178,13 +190,26 @@ const uploadPhoto = (e) => {
 
             ))}
 
-            {/* {previewSource && (
-                <div className="h-32 flex">
-                <img src={previewSource} alt="chosen" style={{
-                    height:'130px'
-                }} />
-                </div>
-            )} */}
+
+                {/* Display preview of chosen photos */}
+                    {previewSources.map((source, index) => (
+                        <img
+                        key={index}
+                        src={source}
+                        alt={`Preview ${index}`}
+                        style={{ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' }}
+                        />
+                    ))}
+
+                {/* Display the uploaded photos */}
+                    {uploadedPhotos.map((photoUrl, index) => (
+                        <img
+                        key={index}
+                        src={photoUrl}
+                        alt={`Uploaded ${index}`}
+                        style={{ width: '100px', height: '100px', objectFit: 'cover', margin: '5px' }}
+                        />
+                    ))}
 
                 <label className="h-32 cursor-pointer flex items-center gap-1 justify-center border bg-transparent rounded-xl p-2 text-xl text-gray-600" >
                     <input type="file" name="image" multiple className="hidden" onChange={uploadPhoto} value={fileInputState}/>
@@ -195,8 +220,12 @@ const uploadPhoto = (e) => {
                 </label>
                 
                 <div>
-                    <input type="file" name="image" onChange={uploadPhoto} value={fileInputState}/>
-                    <button className='bg-red-500' type="submit">submit</button>
+                    <input 
+                        type="file"
+                        onChange={uploadPhoto}
+                        multiple // Allow multiple files to be selected
+                        />
+                    <button type="submit">Upload Photos</button>
                 </div>
             </div>
 
