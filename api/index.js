@@ -35,8 +35,8 @@ app.use(function(req, res, next) {
 app.use(compression());
 
 // Set the maximum payload size to 50 megabytes (adjust as needed)
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '100mb', extended: true }));
+app.use(bodyParser.json({ limit: '300mb' }));
+app.use(bodyParser.urlencoded({ limit: '500mb', extended: true }));
 
 app.use('/uploads', express.static(__dirname + '/uploads'));
 app.use(cors({
@@ -106,29 +106,27 @@ app.post('/upload-by-link', async (req, res) => {
   try {
     let { link } = req.body;
     
+    
+    
     // // Check if the link starts with 'http://' or 'https://', and prepend 'http://' if it doesn't
     // if (!link.startsWith('http://') && !link.startsWith('https://')) {
     //   link = 'http://' + link;
     // }
+
+    
     
     const fileExtension = path.extname(link); // Extract the file extension from the URL
 
     // Generate a new name for the file
     const newName = 'photo' + Date.now() + fileExtension;
 
-    // Create the 'uploads' directory if it doesn't exist
-    const uploadsDir = path.join(__dirname, 'uploads');
-    if (!fs.existsSync(uploadsDir)) {
-      fs.mkdirSync(uploadsDir);
-    }
+    const uploadedResponse = await cloudinary.uploader.upload(link, {
+      public_id: newName,
+      //upload_preset: 'dev_setups'
+    })
+    
 
-    // Download the image from the provided link and save it to the 'uploads' directory
-    await imageDownloader.image({
-      url: link,
-      dest: path.join(uploadsDir, newName),
-    });
-
-    res.json(newName);
+    res.json(uploadedResponse.secure_url);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Failed to upload the image' });
@@ -150,11 +148,16 @@ app.post('/upload-by-link', async (req, res) => {
   app.post('/upload', async(req, res) => {
     try {
       const fileStr = req.body.data;
+      console.log(fileStr)
       const uploadedResponse = await cloudinary.uploader.upload(fileStr, {
-        upload_preset: 'dev_setups'
+        //upload_preset: 'dev_setups'
       })
       // console.log(uploadedResponse)
-      res.status(200).send('File uploaded successfully.');
+      const data = {
+          message: 'File uploaded successfully.',
+          imageUrl: uploadedResponse.secure_url
+      }
+      res.status(200).json(data);
     } catch (error) {
       console.error(error);
       res.status(500).send('An error occurred while uploading the file.');
