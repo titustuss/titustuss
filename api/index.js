@@ -122,7 +122,7 @@ app.post('/upload-by-link', async (req, res) => {
 
     const uploadedResponse = await cloudinary.uploader.upload(link, {
       public_id: newName,
-      //upload_preset: 'dev_setups'
+      upload_preset: 'dev_setups'
     })
     
 
@@ -150,7 +150,7 @@ app.post('/upload-by-link', async (req, res) => {
       const fileStr = req.body.data;
       console.log(fileStr)
       const uploadedResponse = await cloudinary.uploader.upload(fileStr, {
-        //upload_preset: 'dev_setups'
+        upload_preset: 'dev_setups'
       })
       // console.log(uploadedResponse)
       const data = {
