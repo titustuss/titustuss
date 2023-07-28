@@ -216,14 +216,6 @@ export default function PlacesFormPage (){
                         Upload
                 </label>
                 
-                <div>
-                    <input 
-                        type="file"
-                        onChange={uploadPhoto}
-                        multiple // Allow multiple files to be selected
-                        />
-                    <button type="submit">Upload Photos</button>
-                </div>
             </div>
 
             {preInput('Description','The description of the property')} 
