@@ -53,18 +53,18 @@ export default function PlacePage(){
                     <div >
                         {place.photos?.[0] && (
                             <div>
-                                <img className="aspect-square object-cover" src={'http://localhost:4000/uploads/' + place.photos?.[0]} alt="" />
+                                <img className="aspect-square object-cover" src={place.photos?.[0]} alt="" />
                             </div>
         
                         )}
                     </div>
                     <div className="grid gap-2">
                         {place.photos?.[1] && (
-                            <img className="aspect-square object-cover" src={'http://localhost:4000/uploads/' + place.photos?.[1]} alt="" />
+                            <img className="aspect-square object-cover" src={place.photos?.[1]} alt="" />
                         )}
                         <div >
                         {place.photos?.[2] && (
-                            <img className="aspect-square object-cover" src={'http://localhost:4000/uploads/' + place.photos?.[2]} alt="" />
+                            <img className="aspect-square object-cover" src={place.photos?.[2]} alt="" />
                         )}
                         </div>
                     </div>
