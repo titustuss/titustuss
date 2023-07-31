@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 export default function PlacePage(){
     const {id} = useParams();
@@ -31,7 +31,7 @@ export default function PlacePage(){
                 </div>
             {place?.photos?.length > 0 && place.photos.map(photo =>(
                 <div>
-                <img src={'http://localhost:4000/uploads/' + photo} alt="" />
+                <img src={photo} alt="" />
                 </div>
             ))}
             </div>
@@ -49,22 +49,22 @@ export default function PlacePage(){
                 </svg>
                 {place.address}</a>
             <div className="relative">
-                <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl overflow-hidden">
-                    <div >
+                <div className="grid gap-2 grid-cols-[2fr_1fr] rounded-2xl  ">
+                    <div className="object-fit">
                         {place.photos?.[0] && (
                             <div>
-                                <img className="aspect-square object-cover" src={place.photos?.[0]} alt="" />
+                                <img className="object-cover" src={place.photos?.[0]} alt="" width={1240} height={870} />
                             </div>
         
                         )}
                     </div>
                     <div className="grid gap-2">
                         {place.photos?.[1] && (
-                            <img className="aspect-square object-cover" src={place.photos?.[1]} alt="" />
+                            <img className="object-cover" src={place.photos?.[1]} alt=""width={704} height={503} />
                         )}
                         <div >
                         {place.photos?.[2] && (
-                            <img className="aspect-square object-cover" src={place.photos?.[2]} alt="" />
+                            <img className="object-cover" src={place.photos?.[2]} alt="" width={704} height={503}/>
                         )}
                         </div>
                     </div>
@@ -76,13 +76,27 @@ export default function PlacePage(){
                     Show more photos
                     </button>
             </div>
-            <div className="my-4">
+            <div className="my-4 ">
                 <h2 className="font-semibold text-2xl">Description</h2>
                 {place.description}
             </div>
-            <div className="grid grid-cols-2">
-                <div>a</div>
-                <div>b</div>
+            <h2>Perks</h2>
+            <div className="grid grid-cols-2 gap-4">
+                <div>
+                    {place.perks.map((perk, index) => (
+                    <div key={index} className="flex items-center">
+                        <img src={perk.url} alt={perk.name} className="w-8 h-8 mr-2" />
+                        <span>{perk}</span>
+                    </div>
+                    ))}
+                </div>
+
+                <div className="bg-white p-4 rounded-lg shadow-lg">
+                <h1 className="font-semibold text-2xl">Contact us</h1>
+                {place.contact}
+                <div className="mb-4">{place.email}</div>
+                </div>
+
             </div>
             <div className="my-4">
                 <h2 className="font-semibold text-xl">ExtraInfo</h2>

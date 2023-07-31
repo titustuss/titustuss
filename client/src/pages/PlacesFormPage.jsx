@@ -11,6 +11,8 @@ export default function PlacesFormPage (){
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [photoLink, setPhotoLink] = useState('');
     const [description, setDescription] =useState('');
+    const [contact,setContact] = useState(+254);
+    const [email,setEmail] = useState('')
     const [perks,setPerks] = useState([]);
     const [extraInfo, setExtraInfo]= useState('');
     const [price,setPrice] = useState(1000);
@@ -31,6 +33,8 @@ export default function PlacesFormPage (){
             setAddress(data.address);
             setAddedPhotos(data.photos);
             setDescription(data.description);
+            setContact(data.contact);
+            setEmail(data.email);
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
             setPrice(data.price);
@@ -111,7 +115,7 @@ export default function PlacesFormPage (){
         setPreviewSources([]);
         const placeData={
             title,address, addedPhotos,
-            description,perks, extraInfo,price}
+            description,contact,email,perks, extraInfo,price}
         if(id){
             // update
             await axios.put('/places',{
@@ -220,6 +224,12 @@ export default function PlacesFormPage (){
 
             {preInput('Description','The description of the property')} 
                 <textarea value={description} onChange={e=>setDescription(e.target.value)}></textarea>
+
+            {preInput('Contact','Enter your contact')} 
+            <input type="number" value={contact} onChange={e=>setContact(e.target.value)} placeholder="Enter phone number"></input>
+
+            {preInput('Email','Enter the email to be contacted on')}
+            <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email"/>
 
             {preInput('Perks','Select all the perks of your property')} 
             <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
