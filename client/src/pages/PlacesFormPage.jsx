@@ -72,47 +72,95 @@ export default function PlacesFormPage (){
   
 
     // upload using file
-    const uploadPhoto = (e) => {
-        const files = e.target.files;
-        const photoArray = Array.from(files);
-    
-    // Preview and upload each file in the array
-        photoArray.forEach(previewAndUploadFile);
-      };
-    
-      const previewAndUploadFile = (file) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onloadend = () => {
-          const base64EncodedImage = reader.result;
-          setAddedPhotos((prev) => [...prev, base64EncodedImage])
-          //setPreviewSources((prev) => [...prev, base64EncodedImage]); // Append the new previewSource to the existing array
-        };
-      };
-    
-    
-      const uploadImage = async (base64EncodedImage) => {
-        try {
-          const response = await axios.post('/upload', { data: base64EncodedImage }, {
-            headers: { 'Content-type': 'application/json' }
-          });
-          console.log('Image uploaded successfully.');
-          setUploadedPhotos((prev) => [...prev, response.imageUrl]);
-        } catch (error) {
-          console.error(error);
+
+    async function processFile(e){
+        var file = e.target.files[0];
+      
+        const newName = 'photo' + Date.now();
+      
+        // Set your cloud name and unsigned upload preset here:
+        var YOUR_CLOUD_NAME = "dkrh7ft4a";
+        var YOUR_UNSIGNED_UPLOAD_PRESET = "dev_setups";
+      
+        var POST_URL =
+          "https://api.cloudinary.com/v1_1/" + YOUR_CLOUD_NAME + "/auto/upload";
+      
+        var XUniqueUploadId = new Date();
+      
+        processFile();
+      
+        function processFile(e) {
+          var size = file.size;
+          var sliceSize = 20000000;
+          var start = 0;
+      
+          setTimeout(loop, 3);
+      
+          function loop() {
+            var end = start + sliceSize;
+      
+            if (end > size) {
+              end = size;
+            }
+            var s = slice(file, start, end);
+            send(s, start, end - 1, size);
+            if (end < size) {
+              start += sliceSize;
+              setTimeout(loop, 3);
+            }
+          }
         }
+      
+        function send(piece, start, end, size) {
+      
+          var formdata = new FormData();
+      
+          formdata.append("file", piece);
+          formdata.append("cloud_name", YOUR_CLOUD_NAME);
+          formdata.append("upload_preset", YOUR_UNSIGNED_UPLOAD_PRESET);
+          formdata.append("public_id", newName);
+      
+          var xhr = new XMLHttpRequest();
+          xhr.open("POST", POST_URL, false);
+          xhr.setRequestHeader("X-Unique-Upload-Id", XUniqueUploadId);
+          xhr.setRequestHeader(
+            "Content-Range",
+            "bytes " + start + "-" + end + "/" + size
+          );
+          
+          
+          xhr.onload = function () {
+            // Getting the imageURL and adding it to AddedPhotos
+            let response = this.responseText;
+            let responseData = JSON.parse(response);
+            let imageUrl = responseData.secure_url;
+            setAddedPhotos((prev) => [...prev, imageUrl]);
+
+            
+          };
+      
+          xhr.send(formdata);
+      
+        }
+      
+        function slice(file, start, end) {
+          var slice = file.mozSlice
+            ? file.mozSlice
+            : file.webkitSlice
+            ? file.webkitSlice
+            : file.slice
+            ? file.slice
+            : noop;
+      
+          return slice.bind(file)(start, end);
+        }
+      
+        function noop() {}
       };
-
-
 
     async function savePlace(e){
         e.preventDefault();
         // Upload all the previewed photos
-        await Promise.all(previewSources.map(uploadImage));
-
-
-        // Clear the previewed photos after uploading
-        setPreviewSources([]);
         const placeData={
             title,address, addedPhotos,
             description,contact,email,perks, extraInfo,price}
@@ -229,7 +277,7 @@ export default function PlacesFormPage (){
 
                 
                 <label className="h-32 cursor-pointer flex items-center gap-1 justify-center border bg-transparent rounded-xl p-2 text-xl text-gray-600" >
-                    <input type="file" name="image" multiple className="hidden" onChange={uploadPhoto} value={fileInputState}/>
+                    <input type="file" name="image" multiple className="hidden" onChange={processFile} /*value={fileInputState}*//>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
                     </svg>
