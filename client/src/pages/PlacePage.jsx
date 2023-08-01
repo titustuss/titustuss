@@ -12,6 +12,7 @@ export default function PlacePage(){
         }
         axios.get('/places/' + id).then(response =>{
             setPlace(response.data)
+            console.log(response.data);
         });
     },[id]);
 
@@ -85,7 +86,7 @@ export default function PlacePage(){
                 <div>
                     {place.perks.map((perk, index) => (
                     <div key={index} className="flex items-center">
-                        <img src={perk.url} alt={perk.name} className="w-8 h-8 mr-2" />
+                        <img src={'http://localhost:5173/' + perk + '.svg' } alt={perk.name} className="w-8 h-8 mr-2" />
                         <span>{perk}</span>
                     </div>
                     ))}
