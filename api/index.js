@@ -133,37 +133,6 @@ app.post('/upload-by-link', async (req, res) => {
   }
 });
 
-//getting an image from cloudinary
-  app.get('/images', async(req,res)=>{
-    const {resources} = await cloudinary.search.expression
-    ('folder: Onaproperty')
-    .sort_by('public_id', 'desc')
-    .max_results(30)
-    .execute();
-    const publicIds = resources.map(file => file.public_id);
-    res.send(publicIds)
-  })
-
-  //uploading an image to cloudinary (from file)
-  app.post('/upload', async(req, res) => {
-    try {
-      const fileStr = req.body.data;
-      console.log(fileStr)
-      const uploadedResponse = await cloudinary.uploader.upload(fileStr, {
-        upload_preset: 'dev_setups'
-      })
-      // console.log(uploadedResponse)
-      const data = {
-          message: 'File uploaded successfully.',
-          imageUrl: uploadedResponse.secure_url
-      }
-      res.status(200).json(data);
-    } catch (error) {
-      console.error(error);
-      res.status(500).send('An error occurred while uploading the file.');
-    }
-  });
-
 
   app.post('/places',(req,res)=>{
     const {token}= req.cookies;
