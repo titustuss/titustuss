@@ -43,7 +43,7 @@ export default function PlacesFormPage (){
 
     function inputHeader(text) {
         return(
-            <h2 className="text-lg mt-3">{text}</h2>
+            <h2 className="font-semibold text-2xl mb-4">{text}</h2>
         );
     }
 
@@ -148,20 +148,35 @@ export default function PlacesFormPage (){
             .filter(photo => photo !== filename)]);
     }
     return(
-        <div>
+        <div className="min-h-screen flex flex-col items-center justify-center pb-10">
+            <div className="pt-6">
             <AccountNav/>
-        <form onSubmit={savePlace}>
+            </div>
+        <form onSubmit={savePlace} className="md-8">
+            <div className="bg-white p-4 rounded-lg shadow-lg relative showcase-form max-w-screen-2xl">
+            <div className="form-control mb-4">
             {preInput('Title','Title for your property, should be short and catchy')}
-                <input type="text" value={title} onChange={e=>setTitle(e.target.value)} placeholder="title"/>
+                <input type="text" value={title} onChange={e=>setTitle(e.target.value)}
+                className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" 
+                placeholder="title"/>
+            </div>
 
+            <div className="form-control mb-4">
             {preInput('Address','Address to your property')}
-                <input type="text" value={address} onChange={e=>setAddress(e.target.value)} placeholder="address"/>
-            {preInput('Photos','more=better')}    
-                <div className="flex gap-3">
-                    <input value={photoLink}
-                     onChange={e=>setPhotoLink(e.target.value)} 
-                     type="text" placeholder={'Add using a link "must start with" http//....)'} />
-                    <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">Add&nbsp;Photo</button>
+                <input type="text" value={address} onChange={e=>setAddress(e.target.value)}
+                className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+                 placeholder="address"/>
+            </div>
+
+                <div className="form-control mb-4">
+                    {preInput('Photos','more=better')}    
+                        <div className="flex gap-3">
+                            <input value={photoLink}
+                            onChange={e=>setPhotoLink(e.target.value)}
+                            className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+                            type="text" placeholder={'Add using a link "must start with" http//....)'} />
+                            <button onClick={addPhotoByLink} className="bg-gray-200 px-4 rounded-2xl">Add&nbsp;Photo</button>
+                        </div>
                 </div>
 
             <div className="mt-2 gap-2 grid grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
@@ -212,6 +227,7 @@ export default function PlacesFormPage (){
                         
                     ))}
 
+                
                 <label className="h-32 cursor-pointer flex items-center gap-1 justify-center border bg-transparent rounded-xl p-2 text-xl text-gray-600" >
                     <input type="file" name="image" multiple className="hidden" onChange={uploadPhoto} value={fileInputState}/>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
@@ -221,29 +237,50 @@ export default function PlacesFormPage (){
                 </label>
                 
             </div>
+            
+            <div className="form-control mb-4">
+                {preInput('Description','The description of the property')} 
+                <textarea value={description} onChange={e=>setDescription(e.target.value)}
+                className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+                ></textarea>
+            </div>
 
-            {preInput('Description','The description of the property')} 
-                <textarea value={description} onChange={e=>setDescription(e.target.value)}></textarea>
+            <div className="form-control mb-4">          
+                {preInput('Contact','Enter your contact')} 
+                    <input type="number" value={contact} onChange={e=>setContact(e.target.value)} 
+                    className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+                    placeholder="Enter phone number"></input>
+            </div> 
 
-            {preInput('Contact','Enter your contact')} 
-            <input type="number" value={contact} onChange={e=>setContact(e.target.value)} placeholder="Enter phone number"></input>
-
-            {preInput('Email','Enter the email to be contacted on')}
-            <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="Email"/>
-
+            <div className="form-control mb-4">
+                {preInput('Email','Enter the email to be contacted on')}
+                    <input type="email" value={email} onChange={e=>setEmail(e.target.value)}
+                    className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+                    placeholder="Email"/>
+            </div>
+            
+            
             {preInput('Perks','Select all the perks of your property')} 
             <div className="grid mt-2 gap-2 grid-cols-2 md:grid-cols-4 lg:grid-cols-6">
                <Perks selected={perks} onChange={setPerks}/>
             </div>
-
-            {preInput('Extra info','More into details of the property')} 
-                <textarea value={extraInfo} onChange={e=>setExtraInfo(e.target.value)}></textarea>
-
-            {preInput('Property Price','the price of your property')} 
-            <input type="number" value={price} onChange={e=>setPrice(e.target.value)}></input>
             
+            <div className="form-control mb-4">
+                {preInput('Extra info','More into details of the property')}
+                <textarea value={extraInfo} onChange={e=>setExtraInfo(e.target.value)}
+                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
+                </textarea>
+            </div>
+
+            <div className="form-control mb-4">
+                {preInput('Property Price','the price of your property')}
+                <input type="number" value={price} onChange={e=>setPrice(e.target.value)}
+                className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
+                </input>
+            </div>
+
             <button className="primary my-4">Save</button>
-        
+        </div>
         </form>
      </div>
     );
