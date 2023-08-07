@@ -42,7 +42,7 @@ export default function PlacePage(){
 
     return(
         <div className="mt-8 bg-gray-100 -mx-8 px-8 py-5">
-            <h1 className="text-3xl">{place.title}</h1>
+            <h1 className="font-semibold text-3xl">{place.title}</h1>
             <a className="flex gap-1 my-2 block font-semibold underline" target="_blank" href={'https://maps.google.com/?g='+ place.address}>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -81,21 +81,50 @@ export default function PlacePage(){
                 <h2 className="font-semibold text-2xl">Description</h2>
                 {place.description}
             </div>
-            <h2>Perks</h2>
-            <div className="grid grid-cols-2 gap-4">
+  
+            <div className="grid grid-cols-2 gap-4 mt-5">
+                {place.perks.length > 0 && (
+                    <h2 className="font-semibold text-2xl">Perks</h2>
+                )} <br />
                 <div>
                     {place.perks.map((perk, index) => (
-                    <div key={index} className="flex items-center">
+                    <div key={index} className="flex items-center p-3">
                         <img src={'http://localhost:5173/' + perk + '.svg' } alt={perk.name} className="w-8 h-8 mr-2" />
                         <span>{perk}</span>
                     </div>
                     ))}
                 </div>
 
-                <div className="bg-white p-4 rounded-lg shadow-lg">
-                <h1 className="font-semibold text-2xl">Contact us</h1>
-                {place.contact}
-                <div className="mb-4">{place.email}</div>
+                <div className="bg-white p-4 rounded-lg shadow-lg mb-3">
+                    <h1 className="font-semibold text-2xl mb-4">Contact us</h1>
+                    <a href={`tel:${place.contact}`} className="flex items-center mb-2">
+                        <span className="mr-2">{place.contact}</span>
+                        <div className="border border-gray-300 rounded-lg p-2 flex items-center">
+                            <img src={'http://localhost:5173/phone.svg'} alt="" className="w-8 h-8 mr-2" />
+                            <h1 className="text-lg font-medium text-gray-800">PHONE</h1>
+                        </div>
+                    </a>
+                    <a href={`sms:${place.contact}`} className="flex items-center mb-2">
+                        <span className="mr-2">{place.contact}</span>
+                        <div className="border border-gray-300 rounded-lg p-2 flex items-center">
+                            <img src={'http://localhost:5173/message.svg'} alt="" className="w-8 h-8 mr-2" />
+                            <h1 className="text-lg font-medium text-gray-800">MESSAGE</h1>
+                        </div>
+                    </a>
+                    <a href={`https://wa.me/${place.contact}`} target="_blank" rel="noopener noreferrer" className="flex items-center mb-2">
+                        <span className="mr-2">{place.contact}</span>
+                        <div className="border border-gray-300 rounded-lg p-2 flex items-center">
+                            <img src={'http://localhost:5173/whatsapp.svg'} alt="" className="w-8 h-8 mr-2" />
+                            <h1 className="text-lg font-medium text-gray-800">WHATSAPP</h1>
+                        </div>
+                    </a>
+                    <a href={`mailto:${place.email}`} className="flex items-center mb-2">
+                        <span className="mr-2">{place.contact}</span>
+                        <div className="border border-gray-300 rounded-lg p-2 flex items-center">
+                            <img src={'http://localhost:5173/email.svg'} alt="" className="w-8 h-8 mr-2" />
+                            <h1 className="text-lg font-medium text-gray-800">EMAIL</h1>
+                        </div>
+                    </a>
                 </div>
 
             </div>
@@ -103,7 +132,6 @@ export default function PlacePage(){
                 <h2 className="font-semibold text-xl">ExtraInfo</h2>
                 {place.extraInfo}
             </div>
-           
         </div>
     )
 }
