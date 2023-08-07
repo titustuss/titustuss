@@ -8,6 +8,7 @@ export default function PlacesFormPage (){
     const {id} =useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
+    const [category, setCategory] = useState('');
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [photoLink, setPhotoLink] = useState('');
     const [description, setDescription] =useState('');
@@ -32,6 +33,7 @@ export default function PlacesFormPage (){
             setTitle(data.title);
             setAddress(data.address);
             setAddedPhotos(data.photos);
+            setCategory(data.category)
             setDescription(data.description);
             setContact(data.contact);
             setEmail(data.email);
@@ -79,7 +81,7 @@ export default function PlacesFormPage (){
         const newName = 'photo' + Date.now();
       
         // Set your cloud name and unsigned upload preset here:
-        var YOUR_CLOUD_NAME = "dkrh7ft4a";
+        var YOUR_CLOUD_NAME = "dfgrndvvy";
         var YOUR_UNSIGNED_UPLOAD_PRESET = "dev_setups";
       
         var POST_URL =
@@ -162,7 +164,7 @@ export default function PlacesFormPage (){
         e.preventDefault();
         // Upload all the previewed photos
         const placeData={
-            title,address, addedPhotos,
+            title,address, category, addedPhotos,
             description,contact,email,perks, extraInfo,price}
         if(id){
             // update
@@ -207,16 +209,33 @@ export default function PlacesFormPage (){
             <div className="bg-white p-4 rounded-lg shadow-lg relative showcase-form max-w-screen-2xl">
             <div className="form-control mb-4">
             {preInput('Title','Title for your property, should be short and catchy')}
-                <input type="text" value={title} onChange={e=>setTitle(e.target.value)}
+                <input type="text" value={title} onChange={e=>setTitle(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" 
                 placeholder="title"/>
             </div>
 
             <div className="form-control mb-4">
             {preInput('Address','Address to your property')}
-                <input type="text" value={address} onChange={e=>setAddress(e.target.value)}
+                <input type="text" value={address} onChange={e=>setAddress(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
                  placeholder="address"/>
+            </div>
+
+            <div className="form-control mb-4">
+            {preInput('Category','Select property type')}
+            <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+                defaultValue="apartment"
+                className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+            >
+                <option value="apartment">Apartment</option>
+                <option value="villa">Villa</option>
+                <option value="hotel">Hotel</option>
+                <option value="real estate">Real estate</option>
+                <option value="town house">Town house</option>
+            </select>
             </div>
 
                 <div className="form-control mb-4">
@@ -291,21 +310,21 @@ export default function PlacesFormPage (){
             
             <div className="form-control mb-4">
                 {preInput('Description','The description of the property')} 
-                <textarea value={description} onChange={e=>setDescription(e.target.value)}
+                <textarea value={description} onChange={e=>setDescription(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
                 ></textarea>
             </div>
 
             <div className="form-control mb-4">          
                 {preInput('Contact','Enter your contact')} 
-                    <input type="number" value={contact} onChange={e=>setContact(e.target.value)} 
+                    <input type="number" value={contact} onChange={e=>setContact(e.target.value)} required
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
                     placeholder="Enter phone number"></input>
             </div> 
 
             <div className="form-control mb-4">
                 {preInput('Email','Enter the email to be contacted on')}
-                    <input type="email" value={email} onChange={e=>setEmail(e.target.value)}
+                    <input type="email" value={email} onChange={e=>setEmail(e.target.value)} required
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
                     placeholder="Email"/>
             </div>
@@ -325,7 +344,7 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4">
                 {preInput('Property Price','the price of your property')}
-                <input type="number" value={price} onChange={e=>setPrice(e.target.value)}
+                <input type="number" value={price} onChange={e=>setPrice(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
                 </input>
             </div>
