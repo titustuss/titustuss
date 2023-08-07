@@ -185,9 +185,12 @@ export default function PlacesFormPage (){
         return <Navigate to={'/account/places'}/>
     }
 
-    function removePhoto (e,filename){
+    async function removePhoto (e,filename){
         e.preventDefault();
+        const publicId = filename.split("/")[7].split(".")[0];
+        console.log(publicId);
         setAddedPhotos([...addedPhotos.filter(photo => photo !== filename)]);
+        await axios.post('/get-public-id', {publicId: publicId});
     }
 
     function selectAsMainPhoto (e,filename){

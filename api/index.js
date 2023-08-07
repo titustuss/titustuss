@@ -181,6 +181,17 @@ app.post('/upload-by-link', async (req, res) => {
       });
   })
 
+  app.post('/get-public-id', async (req, res) => {
+    const { publicId } = req.body;
+    
+    cloudinary.api.delete_resources([publicId], {type: 'upload', resource_type: 'image'}).then(
+      console.log("Image Deleted")
+    );
+
+    res.status(200);
+    
+
+  });
 
   // DELETE the listing property
 app.delete('/places/:id', async (req, res) => {
