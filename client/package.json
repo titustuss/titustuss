@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build tailwindcss build ./path/to/your/styles.css -o ./path/to/your/output.css",
+    "build": "tailwindcss build -i ./src/index.css -o public/styles.css",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
