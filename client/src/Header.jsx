@@ -1,18 +1,62 @@
 import { useContext } from "react"
+import axios from "axios";
 import { Link } from "react-router-dom"
 import { UserContext } from "./UserContext"
+import { useState, useEffect } from "react";
+
+const getUniqueCategories = (places) => {
+  const categories = places.map((place) => place.category.toLowerCase());
+  return [...new Set(categories)];
+};
 
 export default function Header() {
   const {user} = useContext(UserContext);
+  const [places, setPlaces] = useState([]);
+  const [category, setCategory] = useState("");
+  const [uniqueCategories, setUniqueCategories] = useState([]); // State for unique categories
+
+  useEffect(() => {
+    // Step 1: Fetch properties and get unique categories
+    const fetchPlaces = async () => {
+      try {
+        const response = await axios.get("/places");
+        setPlaces(response.data);
+        setUniqueCategories(getUniqueCategories(response.data)); // Update unique categories
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
+
+    fetchPlaces();
+  }, []);
+
+
+  useEffect(() => {
+    // Step 2: Fetch properties based on selected category (category)
+    const fetchPlaces = async () => {
+      const url = category ? `/places?category=${category}` : "/places";
+      try {
+        const response = await axios.get(url);
+        setPlaces(response.data);
+      } catch (error) {
+        console.error("Error fetching properties:", error);
+      }
+    };
+
+    fetchPlaces();
+  }, [category]);
+
+
+
   return (
     <div>
       {/* the logo */}
-      <header className='flex justify-between'>
+      <header className='flex justify-between  items-center flex-wrap md:flex-no-wrap flex-wrap sm:flex-no-wrap'>
         <Link to={'/'} className='flex items-center gap-1'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 -rotate-90">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
           </svg>
-          <span className='font-bold text-xl'>airbnb</span>
+          <span className='font-bold text-xl'>ONA Properties</span>
         </Link>
         {/* the search */}
         <div className='flex gap-2 flex border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300'>
@@ -22,6 +66,24 @@ export default function Header() {
             </svg>
           </button>
         </div>
+
+          <div className='flex gap-2 flex border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300'>
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+                className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+              >
+                <option value="">All</option>
+                <option value="hotels">Hotel</option>
+                <option value="villa">Villa</option>
+                {uniqueCategories.map((type) => (
+                  <option key={type} value={type.toLowerCase()}>
+                    {type}
+                  </option>
+                ))}
+              </select>
+          </div>
         
         {/* the user */}
         <Link to={user?'/account':'/login'} className='flex items-center gap-2 flex border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300'>
