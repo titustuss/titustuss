@@ -8,7 +8,7 @@ export default function PlacesFormPage (){
     const {id} =useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState('apartment');
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [photoLink, setPhotoLink] = useState('');
     const [description, setDescription] =useState('');
