@@ -34,7 +34,6 @@ export default function IndexPage({category}) {
             </h2>
             <h3 className="">{place.address}</h3>
             <div className="right-0">${place.price}</div>
-            {place.category}
           </Link>
         ))}
     </div>
