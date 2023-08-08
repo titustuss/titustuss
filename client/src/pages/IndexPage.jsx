@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
-export default function IndexPage() {
+export default function IndexPage({category}) {
   const [places, setPlaces] = useState([]);
-  const [category, setCategory] = useState(""); // State for selected category
+  
 
   useEffect(() => {
     axios.get("/places").then((response) => {
@@ -12,9 +12,8 @@ export default function IndexPage() {
     });
   }, []);
 
-  const filteredPlaces = category
-    ? places.filter((place) => place.category.toLowerCase() === category)
-    : places;
+
+  const filteredPlaces = places.filter(place => (category === "all" || place.category.toLowerCase() === category));
 
   return (
     <div className="mt-8 grid gap-x-6 gap-y-8 grid-cols-2 md:grid-cols-3 lg:grid-cols-5 animate-slideup">
