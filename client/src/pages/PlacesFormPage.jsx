@@ -349,7 +349,7 @@ export default function PlacesFormPage (){
                 </input>
             </div>
 
-            <button className="primary my-4">Save</button>
+            <button className="primary my-4 max-w-10">Save</button>
         </div>
         </form>
      </div>

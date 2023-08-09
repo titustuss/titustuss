@@ -1,6 +1,6 @@
-/*
-! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com
-*/
+/* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;1,700&family=Poppins:wght@300;400;500;600;700&display=swap'); */
+
+/* ! tailwindcss v3.3.2 | MIT License | https://tailwindcss.com */
 
 /*
 1. Prevent padding and border from affecting element width. (https://github.com/mozdevs/cssremedy/issues/4)
@@ -570,11 +570,6 @@ video {
   top: 2rem;
 }
 
-.-mx-8 {
-  margin-left: -2rem;
-  margin-right: -2rem;
-}
-
 .mx-auto {
   margin-left: auto;
   margin-right: auto;
@@ -614,6 +609,10 @@ video {
   margin-right: 0.5rem;
 }
 
+.mt-10 {
+  margin-top: 2.5rem;
+}
+
 .mt-2 {
   margin-top: 0.5rem;
 }
@@ -628,10 +627,6 @@ video {
 
 .mt-8 {
   margin-top: 2rem;
-}
-
-.block {
-  display: block;
 }
 
 .flex {
@@ -708,6 +703,10 @@ video {
 
 .max-w-screen-2xl {
   max-width: 1536px;
+}
+
+.max-w-screen-lg {
+  max-width: 1024px;
 }
 
 .max-w-sm {
@@ -875,7 +874,7 @@ video {
 
 .bg-primary {
   --tw-bg-opacity: 1;
-  background-color: rgb(245 56 93 / var(--tw-bg-opacity));
+  background-color: rgb(4 122 237 / var(--tw-bg-opacity));
 }
 
 .bg-transparent {
@@ -945,11 +944,6 @@ video {
 .py-2 {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-}
-
-.py-4 {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
 }
 
 .py-5 {
@@ -1117,11 +1111,11 @@ button {
 }
 
 button.primary{
-  background-color: #F5385D;
+  background-color: #fa2f58;
   width: 100%;
   border-radius: 1rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(245 56 93 / var(--tw-bg-opacity));
+  background-color: rgb(28 63 168 / var(--tw-bg-opacity));
   padding: 0.5rem;
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -1135,6 +1129,12 @@ button.primary{
 .focus\:outline-none:focus {
   outline: 2px solid transparent;
   outline-offset: 2px;
+}
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 768px) {
@@ -1154,10 +1154,5 @@ button.primary{
 
   .lg\:grid-cols-6 {
     grid-template-columns: repeat(6, minmax(0, 1fr));
-  }
-
-  .lg\:text-2xl {
-    font-size: 1.5rem;
-    line-height: 2rem;
   }
 }

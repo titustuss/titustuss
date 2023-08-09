@@ -4,7 +4,14 @@ export default {
   theme: {
     extend: {
       colors:{
-        primary:'#F5385D'
+        primary:'#047aed',
+        secondary:"#1c3fa8",
+        dark:"#002240",
+        light:"#f4f4f4"
+
+      },
+      fontFamily :{
+        body:['Lato']
       },
       gridTemplateColumns:{
         fluid: "repeat(auto-fit,minmax(15rem,ifr))",

@@ -1,3 +1,4 @@
+/* @import url('https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;1,700&family=Poppins:wght@300;400;500;600;700&display=swap'); */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -15,6 +16,6 @@ button{
     @apply bg-gray-300;
 }
 button.primary{
-    background-color: #F5385D;
-    @apply bg-primary p-2 w-full text-white rounded-2xl;
+    background-color: #fa2f58;
+    @apply bg-secondary p-2 w-full text-white rounded-2xl;
 }
