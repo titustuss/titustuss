@@ -13,7 +13,7 @@ export default function IndexPage({category}){
   const filteredPlaces = places.filter(place => (category === "all" || place.category.toLowerCase() === category));
 return (
   <div className=" mt-8 grid gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 animate-slideup">
-    {places.length > 0 && places.map(place =>(
+    {filteredPlaces.length > 0 && filteredPlaces.map(place =>(
       <Link to={'/place/' + place._id} >
         <div className="grid grap-16 grid-cols-fluid">
         {place.photos?.[0] && (
