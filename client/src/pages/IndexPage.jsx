@@ -25,6 +25,42 @@ return (
         </div>
       </Link>
     ))}
+
+        {places.length > 0 && (
+          <div className="flex gap-2 mt-3 flex-wrap">
+            <button
+              // onClick={() => setCurrent((prev) => prev - 1)}
+              // className={`py-2 px-4 rounded bg-blue-500 text-white ${
+              //   !(current > 1) && "opacity-50 cursor-not-allowed"
+              // }`}
+            >
+              Previous
+            </button>
+            {/* <div className="hidden sm:flex items-center gap-2">
+              Page <strong>{current} of {pageCount}</strong>
+            </div> */}
+            <button
+              // onClick={() => setCurrent((prev) => prev + 1)}
+              // className={`py-2 px-4 rounded bg-blue-500 text-white ${
+              //   current === pageCount && "opacity-50 cursor-not-allowed"
+              // }`}
+            >
+              Next
+            </button>
+            <select
+              // value={pageSize}
+              // onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
+              // className="border border-gray-300 py-1 px-2 text-base focus:outline-none"
+            >
+              {[10, 20, 30, 40, 50].map((size) => (
+                <option key={size} value={size}>
+                  Show {size}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
   </div>
 )
 }
