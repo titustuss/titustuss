@@ -20,7 +20,7 @@ export default function PlacePage(){
 
     if(showAllPhotos){
         return(
-        <div className="flex justify-center items-center bg-black text-white min-w-full min-h-screen">
+        <div className="flex justify-center items-center bg-black text-white min-w-full mt-10">
             <div className="bg-black grid gap-4">
                 <div>
                     <h2 className="text-3xl">Photos of {place.title}</h2>
@@ -84,12 +84,12 @@ export default function PlacePage(){
             </div>
   
             <div className="grid sm:grid-cols-2 gap-4 mt-5">
-                {place.perks.length > 0 && (
-                    <h2 className="font-semibold text-2xl">Perks</h2>
-                )} <br />
-                <div className=""> 
+                <div className="flex flex-col"> 
+                    {place.perks.length > 0 && (
+                    <h2 className="font-semibold text-2xl mb-2">Perks</h2>
+                    )}
                     {place.perks.map((perk, index) => (
-                    <div key={index} className="flex items-center p-3">
+                    <div key={index} className="flex items-center p-3 ">
                         <img src={'http://localhost:5173/' + perk + '.svg' } alt={perk.name} className="w-8 h-8 mr-2" />
                         <span>{perk}</span>
                     </div>
@@ -100,28 +100,28 @@ export default function PlacePage(){
                     <h1 className="font-semibold text-2xl mb-4">Contact us</h1>
                     <a href={`tel:${place.contact}`} className="flex items-center mb-2">
                         <span className="mr-2">{place.contact}</span>
-                        <div className="border border-gray-300 hover:border-green-500 rounded-lg p-2 flex items-center">
+                        <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/phone.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800 hover:text-green-500">PHONE</h1>
                         </div>
                     </a>
                     <a href={`sms:${place.contact}`} className="flex items-center mb-2">
                         <span className="mr-2">{place.contact}</span>
-                        <div className="border border-gray-300 rounded-lg p-2 flex items-center">
+                        <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/message.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800">MESSAGE</h1>
                         </div>
                     </a>
                     <a href={`https://wa.me/${place.contact}`} target="_blank" rel="noopener noreferrer" className="flex items-center mb-2">
                         <span className="mr-2">{place.contact}</span>
-                        <div className="border border-gray-300 rounded-lg p-2 flex items-center">
+                        <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/whatsapp.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800">WHATSAPP</h1>
                         </div>
                     </a>
                     <a href={`mailto:${place.email}`} className="flex items-center mb-2">
                         <span className="mr-2">{place.contact}</span>
-                        <div className="border border-gray-300 rounded-lg p-2 flex items-center">
+                        <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/email.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-lg font-medium text-gray-800">EMAIL</h1>
                         </div>
