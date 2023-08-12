@@ -34,7 +34,7 @@ export default function PlacesPage(){
       };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen">
+        <div className="flex flex-col items-center justify-center ">
             <AccountNav/>
         <div className="max-w-screen-xl text-center">
                 <Link className='inline-flex gap-1 bg-primary text-white py-2 px-6 rounded-full' to={'/account/places/new'}>
