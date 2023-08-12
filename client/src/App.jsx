@@ -6,6 +6,7 @@ import Layout from './Layout'
 import RegisterPage from './pages/RegisterPage'
 import axios from 'axios'
 import { UserContextProvider } from './UserContext'
+import { useState } from 'react'
 import AccountPage from './pages/AccountPage'
 import PlacesPage from './pages/PlacesPage'
 import PlacesFormPage from './pages/PlacesFormPage'
@@ -15,11 +16,18 @@ axios.defaults.baseURL ="http://localhost:4000";
 axios.defaults.withCredentials = true;
 
 function App() {
+
+  const [category, setCategory] = useState("all");
+
+  const setCategoryValue = (value) =>{
+    setCategory(value);
+  }
+
   return (
      <UserContextProvider>
      <Routes>
-      <Route path='/' element={<Layout/>}>
-        <Route index element={ <IndexPage/>}/>
+      <Route path='/' element={<Layout category={category} setCategoryValue={setCategoryValue}/>}>
+        <Route index element={ <IndexPage category={category}/>}/>
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/register" element={<RegisterPage/>}/>
         <Route path='/account' element={<AccountPage/>}/>

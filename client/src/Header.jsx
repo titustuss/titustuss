@@ -4,48 +4,15 @@ import { Link } from "react-router-dom"
 import { UserContext } from "./UserContext"
 import { useState, useEffect } from "react";
 
-const getUniqueCategories = (places) => {
-  const categories = places.map((place) => place.category.toLowerCase());
-  return [...new Set(categories)];
-};
 
-export default function Header() {
+export default function Header({category, setCategoryValue}) {
   const {user} = useContext(UserContext);
   const [places, setPlaces] = useState([]);
-  const [category, setCategory] = useState("");
-  const [uniqueCategories, setUniqueCategories] = useState([]); // State for unique categories
+  
 
-  useEffect(() => {
-    // Step 1: Fetch properties and get unique categories
-    const fetchPlaces = async () => {
-      try {
-        const response = await axios.get("/places");
-        setPlaces(response.data);
-        setUniqueCategories(getUniqueCategories(response.data)); // Update unique categories
-      } catch (error) {
-        console.error("Error fetching properties:", error);
-      }
-    };
-
-    fetchPlaces();
-  }, []);
-
-
-  useEffect(() => {
-    // Step 2: Fetch properties based on selected category (category)
-    const fetchPlaces = async () => {
-      const url = category ? `/places?category=${category}` : "/places";
-      try {
-        const response = await axios.get(url);
-        setPlaces(response.data);
-      } catch (error) {
-        console.error("Error fetching properties:", error);
-      }
-    };
-
-    fetchPlaces();
-  }, [category]);
-
+  const handleChange = (e) => {
+    setCategoryValue(e.target.value);
+  }
 
 
   return (
@@ -74,18 +41,16 @@ export default function Header() {
           <div className='flex gap-2 border border-gray-300 rounded py-1 px-2 shadow-md shadow-gray-300'>
               <select
                 value={category}
-                onChange={(e) => setCategory(e.target.value)}
+                onChange={handleChange}
                 required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
               >
-                <option value="">All</option>
-                <option value="hotels">Hotel</option>
+                <option value="all">All</option>
+                <option value="hotel">Hotel</option>
                 <option value="villa">Villa</option>
-                {uniqueCategories.map((type) => (
-                  <option key={type} value={type.toLowerCase()}>
-                    {type}
-                  </option>
-                ))}
+                <option value="apartment">Apartment</option>
+                <option value="real estate">Real Estate</option>
+                <option value="town house">Town House</option>
               </select>
           </div>
         

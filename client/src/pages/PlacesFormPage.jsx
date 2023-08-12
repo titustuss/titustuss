@@ -2,13 +2,15 @@ import { useEffect, useState } from "react";
 import Perks from "../Perks";
 import AccountNav from "../AccountNav";
 import { Navigate, useParams } from "react-router-dom";
+import { MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
 import axios from "axios";
 
 export default function PlacesFormPage (){
     const {id} =useParams();
     const [title, setTitle] = useState('');
     const [address, setAddress] = useState('');
-    const [category, setCategory] = useState('');
+    const [category, setCategory] = useState('apartment');
     const [addedPhotos, setAddedPhotos] = useState([]);
     const [photoLink, setPhotoLink] = useState('');
     const [description, setDescription] =useState('');
@@ -42,6 +44,7 @@ export default function PlacesFormPage (){
             setPrice(data.price);
         })
     },[id]);
+
 
     function inputHeader(text) {
         return(
@@ -200,6 +203,7 @@ export default function PlacesFormPage (){
         setAddedPhotos([filename,...addedPhotos
             .filter(photo => photo !== filename)]);
     }
+
     return(
         <div className="min-h-screen flex flex-col items-center justify-center pb-10">
             <div className="pt-6">
@@ -224,7 +228,6 @@ export default function PlacesFormPage (){
             <div className="form-control mb-4">
             {preInput('Category','Select property type')}
             <select
-                value={category}
                 onChange={(e) => setCategory(e.target.value)}
                 required
                 defaultValue="apartment"
@@ -341,7 +344,10 @@ export default function PlacesFormPage (){
                  className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
                 </textarea>
             </div>
-
+            <div className="form-control mb-4">
+                {preInput('Location')}
+                <MapComponent />
+            </div>
             <div className="form-control mb-4">
                 {preInput('Property Price','the price of your property')}
                 <input type="number" value={price} onChange={e=>setPrice(e.target.value)}required
@@ -355,4 +361,42 @@ export default function PlacesFormPage (){
      </div>
     );
 
+}
+
+function MapComponent(){
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState();
+    const [positionLoaded, setPositionLoaded] = useState(false);
+
+    // GeoLocation
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((pos) => {
+            const lat = pos.coords.latitude;
+            const lng = pos.coords.longitude;
+            setLatitude(lat);
+            setLongitude(lng);
+            setPositionLoaded(true);
+        }, (err) => {
+            if(err.code === 1){
+                alert("Kindly Allow Geolocation For Business Location Determination");
+            }else{
+                alert("Location Cannot Be Determined");
+            }
+        });
+    }, [])
+    
+
+    return (
+        <div>
+            {positionLoaded && (
+                <MapContainer center={[latitude, longitude]} zoom={13} style={{ height: '350px'}}>
+                <TileLayer
+                url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
+                <Marker position={[latitude, longitude]}>
+                    <Popup>You are here</Popup>
+                </Marker>
+            </MapContainer>
+            )}
+        </div>
+    )
 }
