@@ -66,7 +66,7 @@ export default function Header({category, setCategoryValue}) {
           </div>
           {!!user && (
             <div>
-              {user.name}
+              {user.name.split(" ")[0]}
             </div>
           )}
         </Link>
