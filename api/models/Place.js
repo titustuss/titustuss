@@ -11,6 +11,8 @@ const placeSchema = new mongoose.Schema({
     email: String,
     perks:[String],
     extraInfo: String,
+    latitude: Number,
+    longitude: Number,
     price: Number
 });
 

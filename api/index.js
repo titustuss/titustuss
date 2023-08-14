@@ -136,13 +136,13 @@ app.post('/upload-by-link', async (req, res) => {
 
   app.post('/places',(req,res)=>{
     const {token}= req.cookies;
-    const {title,address,category,addedPhotos,description,contact, email, perks,extraInfo,price}= req.body; 
+    const {title,address,category,addedPhotos,description,contact, email, perks,extraInfo, latitude, longitude, price}= req.body; 
     jwt.verify(token, jwtSecret, {}, async (err, userData)=>{
       if(err) throw err;
      const placeDoc=  await Place.create({
         owner:userData.id,
         title,address,category,photos:addedPhotos,
-        description, contact, email, perks,extraInfo,price
+        description, contact, email, perks,extraInfo, latitude, longitude, price
   });
       res.json(placeDoc);
     })
@@ -166,14 +166,14 @@ app.post('/upload-by-link', async (req, res) => {
     const {token}= req.cookies;
     const {id,title,address,category,addedPhotos,
       description, contact, email, perks,
-      extraInfo,price}= 
+      extraInfo, latitude, longitude, price}= 
       req.body;
       jwt.verify(token, jwtSecret, {}, async (err, userData)=>{
         const placeDoc = await Place.findById(id);
         if(userData.id === placeDoc.owner.toString()){
           placeDoc.set({
             title,address,category,photos:addedPhotos,
-            description, contact, email, perks,extraInfo,price
+            description, contact, email, perks,extraInfo, latitude, longitude, price
           })
           await placeDoc.save();
           res.json('ok');
