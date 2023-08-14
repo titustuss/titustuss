@@ -1,18 +1,23 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom"
+import { MapContainer, TileLayer, Marker, Popup} from 'react-leaflet';
 
 export default function PlacePage(){
     const {id} = useParams();
     const [place, setPlace] = useState(null);
     const [showAllPhotos, setShowAllPhotos] = useState(false);
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState();
     useEffect(()=>{
         if(!id){
             return;
         }
         axios.get('/places/' + id).then(response =>{
             setPlace(response.data)
-            console.log(response.data);
+            setLatitude(response.data.latitude);
+            setLongitude(response.data.longitude);
+
         });
     },[id]);
 
@@ -132,6 +137,16 @@ export default function PlacePage(){
             <div className="my-4">
                 <h2 className="font-semibold text-xl">ExtraInfo</h2>
                 {place.extraInfo}
+            </div>
+            <div className="my-4">
+                <h2 className="font-semibold text-xl">Location</h2>
+                <MapContainer center={[latitude, longitude]} zoom={13} style={{ height: '350px'}}>
+                    <TileLayer
+                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
+                    <Marker position={[latitude, longitude]} draggable={false}>
+                        <Popup>You are here</Popup>
+                    </Marker>
+                </MapContainer>
             </div>
         </div>
     </div> 

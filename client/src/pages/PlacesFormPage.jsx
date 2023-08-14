@@ -23,6 +23,8 @@ export default function PlacesFormPage (){
     const [previewSources ,setPreviewSources] = useState([]);
     const [redirect,setRedirect]= useState(false);
     const [uploadedPhotos, setUploadedPhotos] = useState([]);
+    const [latitude, setLatitude] = useState();
+    const [longitude, setLongitude] = useState();
 
 
     useEffect(()=>{
@@ -42,6 +44,8 @@ export default function PlacesFormPage (){
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
             setPrice(data.price);
+            setLatitude(data.latitude);
+            setLongitude(data.longitude);
         })
     },[id]);
 
@@ -168,7 +172,8 @@ export default function PlacesFormPage (){
         // Upload all the previewed photos
         const placeData={
             title,address, category, addedPhotos,
-            description,contact,email,perks, extraInfo,price}
+            description,contact,email,perks, extraInfo, latitude, longitude, price}
+            console.log(placeData);
         if(id){
             // update
             await axios.put('/places',{
@@ -346,7 +351,7 @@ export default function PlacesFormPage (){
             </div>
             <div className="form-control mb-4">
                 {preInput('Location')}
-                <MapComponent />
+                <MapComponent latitude={latitude} longitude={longitude} setLatitude={setLatitude} setLongitude={setLongitude} />
             </div>
             <div className="form-control mb-4">
                 {preInput('Property Price','the price of your property')}
@@ -363,13 +368,12 @@ export default function PlacesFormPage (){
 
 }
 
-function MapComponent(){
-    const [latitude, setLatitude] = useState();
-    const [longitude, setLongitude] = useState();
+function MapComponent({latitude, longitude, setLatitude, setLongitude}){
     const [positionLoaded, setPositionLoaded] = useState(false);
 
     // GeoLocation
     useEffect(() => {
+        console.log(latitude);
         navigator.geolocation.getCurrentPosition((pos) => {
             const lat = pos.coords.latitude;
             const lng = pos.coords.longitude;
@@ -384,6 +388,12 @@ function MapComponent(){
             }
         });
     }, [])
+
+    const handleMarkerDragEnd = (event) => {
+        const newPosition = event.target.getLatLng();
+        setLatitude(newPosition.lat);
+        setLongitude(newPosition.lng);
+    }
     
 
     return (
@@ -392,7 +402,7 @@ function MapComponent(){
                 <MapContainer center={[latitude, longitude]} zoom={13} style={{ height: '350px'}}>
                 <TileLayer
                 url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
-                <Marker position={[latitude, longitude]}>
+                <Marker position={[latitude, longitude]} draggable eventHandlers={{dragend: handleMarkerDragEnd }}>
                     <Popup>You are here</Popup>
                 </Marker>
             </MapContainer>
