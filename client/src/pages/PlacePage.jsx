@@ -144,7 +144,7 @@ export default function PlacePage(){
                     <TileLayer
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'/>
                     <Marker position={[latitude, longitude]} draggable={false}>
-                        <Popup>You are here</Popup>
+                        <Popup>{place.title}</Popup>
                     </Marker>
                 </MapContainer>
             </div>
