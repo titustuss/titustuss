@@ -18,6 +18,7 @@ export default function PlacesFormPage (){
     const [email,setEmail] = useState('')
     const [perks,setPerks] = useState([]);
     const [extraInfo, setExtraInfo]= useState('');
+    const [website, setWebsite]= useState('');
     const [price,setPrice] = useState(1000);
     const [fileInputState, setFileInputState] = useState();
     const [previewSources ,setPreviewSources] = useState([]);
@@ -43,6 +44,7 @@ export default function PlacesFormPage (){
             setEmail(data.email);
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
+            setWebsite(data.website);
             setPrice(data.price);
             setLatitude(data.latitude);
             setLongitude(data.longitude);
@@ -172,7 +174,7 @@ export default function PlacesFormPage (){
         // Upload all the previewed photos
         const placeData={
             title,address, category, addedPhotos,
-            description,contact,email,perks, extraInfo, latitude, longitude, price}
+            description,contact,email,perks, extraInfo,website, latitude, longitude, price}
             console.log(placeData);
         if(id){
             // update
@@ -247,7 +249,7 @@ export default function PlacesFormPage (){
             </div>
 
                 <div className="form-control mb-4">
-                    {preInput('Photos','more=better')}    
+                    {preInput('Photos','upload a 728 by 455 HD photo " the better the quality the more the attraction "')}    
                         <div className="flex gap-3">
                             <input value={photoLink}
                             onChange={e=>setPhotoLink(e.target.value)}
@@ -349,11 +351,19 @@ export default function PlacesFormPage (){
                  className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
                 </textarea>
             </div>
+
             <div className="form-control mb-4">
-                {preInput('Location')}
-                <MapComponent latitude={latitude} longitude={longitude} setLatitude={setLatitude} setLongitude={setLongitude} />
+                {preInput('Your Website','Enter the url of your website if have one')}
+                    <input type="text" value={website} onChange={e=>setWebsite(e.target.value)}
+                    className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+                    placeholder="https://yourwebsite.com"/>
             </div>
-            <div className="form-control mb-4">
+
+            <div className="form-control mb-4 ">
+                {preInput('Location', 'be at the property to grab the location automatically')}
+                <div className="mt-3"><MapComponent latitude={latitude} longitude={longitude} setLatitude={setLatitude} setLongitude={setLongitude} /></div>
+            </div>
+            <div className="form-control mb-4 ">
                 {preInput('Property Price','the price of your property')}
                 <input type="number" value={price} onChange={e=>setPrice(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
