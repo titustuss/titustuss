@@ -16,6 +16,5 @@ button{
     @apply bg-gray-300;
 }
 button.primary{
-    background-color: #fa2f58;
     @apply bg-secondary p-2 w-full text-white rounded-2xl;
 }
