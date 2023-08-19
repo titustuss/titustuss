@@ -25,12 +25,28 @@ export default function PlacesFormPage (){
     const [uploadedPhotos, setUploadedPhotos] = useState([]);
     const [latitude, setLatitude] = useState();
     const [longitude, setLongitude] = useState();
+    const [positionLoaded, setPositionLoaded] = useState(false);
+    const [currency, setCurrency] = useState([]);
+    const [countryPhone, setCountryPhone] = useState([]);
 
 
     useEffect(()=>{
         if(!id){
             return;
         }
+        fetch('http://localhost:5173/src/pages/countrydata.json')
+        .then(response => response.json())
+        .then(data => {
+            for (const countryData of data) {
+                for(const currencyCode in countryData.currencies){
+                    setCurrency(prev => [...prev, currencyCode].sort());
+                }
+                let phoneCode = countryData.flag + " " + countryData.idd.root + countryData.idd.suffixes;
+                setCountryPhone(prev => [...prev, phoneCode]);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+
         axios.get('/places/'+ id)
         .then(response=>{
             const {data} = response;
@@ -44,10 +60,25 @@ export default function PlacesFormPage (){
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
             setPrice(data.price);
-            setLatitude(data.latitude);
-            setLongitude(data.longitude);
-        })
+            if(!data.latitude || !data.longitude){
+                navigator.geolocation.getCurrentPosition((pos) => {
+                    const lat = pos.coords.latitude;
+                    const lng = pos.coords.longitude;
+                    setLatitude(lat);
+                    setLongitude(lng);
+                    setPositionLoaded(true);
+                }, (err) => {
+                    if(err.code === 1){
+                        alert("Kindly Allow Geolocation For Business Location Determination");
+                    }else{
+                        alert("Location Cannot Be Determined");
+                    }
+                });
+            }
+        });
+
     },[id]);
+
 
 
     function inputHeader(text) {
@@ -217,6 +248,8 @@ export default function PlacesFormPage (){
         <form onSubmit={savePlace} className="md-8">
             <div className="bg-white p-4 rounded-lg shadow-lg relative showcase-form max-w-screen-2xl">
             <div className="form-control mb-4">
+        
+
             {preInput('Title','Title for your property, should be short and catchy')}
                 <input type="text" value={title} onChange={e=>setTitle(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" 
@@ -324,10 +357,15 @@ export default function PlacesFormPage (){
             </div>
 
             <div className="form-control mb-4">          
-                {preInput('Contact','Enter your contact')} 
+                {preInput('Contact','Enter your contact')}
+                    <select defaultValue={countryPhone} className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
+                        {countryPhone.length > 0 && countryPhone.map(contactCode => (
+                                <option value={contactCode}>{contactCode}</option>
+                            ))}
+                    </select>
                     <input type="number" value={contact} onChange={e=>setContact(e.target.value)} required
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
-                    placeholder="Enter phone number"></input>
+                    placeholder="Enter phone number" min={9} max={10}></input>
             </div> 
 
             <div className="form-control mb-4">
@@ -351,10 +389,15 @@ export default function PlacesFormPage (){
             </div>
             <div className="form-control mb-4">
                 {preInput('Location')}
-                <MapComponent latitude={latitude} longitude={longitude} setLatitude={setLatitude} setLongitude={setLongitude} />
+                <MapComponent latitude={latitude} longitude={longitude} positionLoaded={positionLoaded} setLatitude={setLatitude} setLongitude={setLongitude} />
             </div>
             <div className="form-control mb-4">
                 {preInput('Property Price','the price of your property')}
+                <select defaultValue={currency}>
+                    {currency.length > 0 && currency.map(tender => (
+                            <option value={tender}>{tender}</option>
+                        ))}
+                </select>
                 <input type="number" value={price} onChange={e=>setPrice(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
                 </input>
@@ -368,26 +411,7 @@ export default function PlacesFormPage (){
 
 }
 
-function MapComponent({latitude, longitude, setLatitude, setLongitude}){
-    const [positionLoaded, setPositionLoaded] = useState(false);
-
-    // GeoLocation
-    useEffect(() => {
-        console.log(latitude);
-        navigator.geolocation.getCurrentPosition((pos) => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            setLatitude(lat);
-            setLongitude(lng);
-            setPositionLoaded(true);
-        }, (err) => {
-            if(err.code === 1){
-                alert("Kindly Allow Geolocation For Business Location Determination");
-            }else{
-                alert("Location Cannot Be Determined");
-            }
-        });
-    }, [])
+function MapComponent({latitude, longitude, positionLoaded, setLatitude, setLongitude}){
 
     const handleMarkerDragEnd = (event) => {
         const newPosition = event.target.getLatLng();
