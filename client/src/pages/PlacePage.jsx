@@ -28,16 +28,16 @@ export default function PlacePage(){
         <div className="flex justify-center items-center bg-black text-white min-w-full mt-10 ">
             <div className="bg-black grid gap-4 pb-8">
                 <div>
-                    <h2 className="text-3xl font-body pl-3">Photos of {place.title}</h2>
-                    <button onClick={()=>setShowAllPhotos(false)} className="fixed flex gap-1 font-body right-2 top-8 py-2 px-3 mr-3 rounded-2xl shadow shadow-black-500 bg-white text-black ">
+                    <h2 className="text-3xl font-body pl-3 pt-3">Photos of {place.title}</h2>
+                    <button onClick={()=>setShowAllPhotos(false)} className="fixed flex gap-1 font-body right-2 top-8 py-2 px-3 mr-3 rounded-2xl shadow shadow-black-500 bg-white text-black border hover:border-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                         <path fillRule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z" clipRule="evenodd" />
                     </svg>
                     close</button>
                 </div>
             {place?.photos?.length > 0 && place.photos.map(photo =>(
-                <div className="flex justify-center">
-                <img src={photo} alt="" />
+                <div className="flex justify-center items-center h-full">
+                <img  className="w-full h-[100%] object-cover" src={photo} alt="" />
                 </div>
             ))}
             </div>
@@ -139,6 +139,16 @@ export default function PlacePage(){
                     </a>
                 </div>
                 
+                <div class="relative w-full overflow-hidden aspect-w-4 aspect-h-3">
+                    <iframe
+                        class="absolute inset-0 w-full h-full"
+                        src="https://www.youtube.com/embed/vlDzYIIOYmM?enablejsapi=1&amp;origin=https%3A%2F%2Fmdbootstrap.com"
+                        allowfullscreen=""
+                        data-gtm-yt-inspected-2340190_699="true"
+                        id="240632615">
+                    </iframe>
+                </div>
+
                 {place.website && (
                 <div className="my-4 bg-white p-4 rounded-lg shadow-md">
                     <h2 className="font-semibold font-body text-2xl mb-2">Visit our Website</h2>
@@ -153,6 +163,9 @@ export default function PlacePage(){
                 </div>
                 )}
 
+
+
+
             </div>
 
             <div className="my-4 mx-auto max-w-screen-xl">
@@ -165,7 +178,6 @@ export default function PlacePage(){
                     </Marker>
                 </MapContainer>
             </div>
-
 
             {place.extraInfo && (
             <div className="my-4">
