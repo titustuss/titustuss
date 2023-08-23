@@ -19,6 +19,7 @@ export default function PlacesFormPage (){
     const [perks,setPerks] = useState([]);
     const [extraInfo, setExtraInfo]= useState('');
     const [website, setWebsite]= useState('');
+    const [youtube, setYoutube]= useState('');
     const [price,setPrice] = useState(1000);
     const [fileInputState, setFileInputState] = useState();
     const [previewSources ,setPreviewSources] = useState([]);
@@ -61,6 +62,7 @@ export default function PlacesFormPage (){
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
             setWebsite(data.website);
+            setYoutube(data.youtube);
             setPrice(data.price);
             if(!data.latitude || !data.longitude){
                 navigator.geolocation.getCurrentPosition((pos) => {
@@ -205,7 +207,7 @@ export default function PlacesFormPage (){
         // Upload all the previewed photos
         const placeData={
             title,address, category, addedPhotos,
-            description,contact,email,perks, extraInfo,website, latitude, longitude, price}
+            description,contact,email,perks, extraInfo,website,youtube, latitude, longitude, price}
             console.log(placeData);
         if(id){
             // update
@@ -399,6 +401,13 @@ export default function PlacesFormPage (){
                     <input type="text" value={website} onChange={e=>setWebsite(e.target.value)}
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
                     placeholder="https://yourwebsite.com"/>
+            </div>
+
+            <div className="form-control mb-4">
+                {preInput('Youtube Vedio','Enter the link of your Youtube video here')}
+                    <input type="text" value={youtube} onChange={e=>setYoutube(e.target.value)}
+                    className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
+                    placeholder="https://youryoutubevedio"/>
             </div>
 
             <div className="form-control mb-4 ">

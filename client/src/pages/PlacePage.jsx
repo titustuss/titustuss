@@ -45,6 +45,12 @@ export default function PlacePage(){
         )
     }
 
+    function extractVideoId(url) {
+        const videoIdRegex = /(?:\/embed\/|v=|vi=|v%3D|youtu.be\/|\/embed\/|\/v\/|watch\?v=|&v=)([^#\\?\\&]*).*/;
+        const match = url.match(videoIdRegex);
+        return match && match[1] ? match[1] : "";
+      }
+      
     return(
     <div className="flex flex-col items-center justify-center pb-8">
         <div className="max-w-screen-xl px-8 py-5 mt-10 bg-gray-100">
@@ -88,7 +94,8 @@ export default function PlacePage(){
             </div>
             <div className="my-4 ">
                 <h2 className="font-semibold font-body text-2xl">Description</h2>
-                {place.description}
+                {place.description}   {place.youtube}
+                
             </div>
   
             <div className="grid sm:grid-cols-2 gap-4 mt-5">
@@ -139,32 +146,38 @@ export default function PlacePage(){
                     </a>
                 </div>
                 
-                <div class="relative w-full overflow-hidden aspect-w-4 aspect-h-3">
-                    <iframe
-                        class="absolute inset-0 w-full h-full"
-                        src="https://www.youtube.com/embed/vlDzYIIOYmM?enablejsapi=1&amp;origin=https%3A%2F%2Fmdbootstrap.com"
-                        allowfullscreen=""
-                        data-gtm-yt-inspected-2340190_699="true"
-                        id="240632615">
-                    </iframe>
-                </div>
-
                 {place.website && (
-                <div className="my-4 bg-white p-4 rounded-lg shadow-md">
-                    <h2 className="font-semibold font-body text-2xl mb-2">Visit our Website</h2>
+                <div className="my-4 bg-white p-4 h-28  rounded-lg shadow-md">
+                    <h2 className="font-gray-800 font-body text-2xl ">Visit our Website</h2>
                     <a
                     href={place.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-primary hover:underline"
+                    className="flex flex-col space-y-1 truncate"
+                    
                     >
-                    {place.website}
+                    <div className="font-semibold text-secondary">
+                        {place.title}
+                    </div>
+                    <div className="text-primary hover:underline">
+                        {place.website}
+                    </div>
+                    
                     </a>
                 </div>
                 )}
 
-
-
+            {place.youtube && (
+            <div className="embed-responsive embed-responsive-1by1 relative w-full h-80 overflow-hidden">
+            <iframe
+                className="bottom-0 left-0 right-0 top-0 h-full w-full"
+                src={`https://www.youtube.com/embed/${extractVideoId(place.youtube)}`} // Replace with the function to extract the video ID
+                allowfullscreen=""
+                id="240632615"
+            >
+            </iframe>
+            </div>
+            )}           
 
             </div>
 

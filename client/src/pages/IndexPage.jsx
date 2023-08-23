@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
-export default function IndexPage({category}){
+export default function IndexPage({category,searchText}){
   const [places,setPlaces] = useState([]);
   useEffect(()=>{
     axios.get('/places').then(response =>{
@@ -11,6 +11,13 @@ export default function IndexPage({category}){
   },[]);
 
   const filteredPlaces = places.filter(place => (category === "all" || place.category.toLowerCase() === category));
+  
+  // const filteredPlacesWithSearch = filteredPlaces.filter(
+  //   place =>
+  //     place.title.toLowerCase().includes(searchText.toLowerCase()) ||
+  //     place.address.toLowerCase().includes(searchText.toLowerCase())
+  // );
+      
 return (
   <div className=" mt-8 grid gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 animate-slideup">
     {filteredPlaces.length > 0 && filteredPlaces.map(place =>(
