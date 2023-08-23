@@ -20,10 +20,15 @@ return (
           <img className="rounded-2xl object-cover aspect-square" src={place.photos?.[0]} alt="" />
         )}
         </div>
-        <h2 className="text-xl truncate ">{place.title}</h2>
-        <h3 className="font-bold ">{place.address}</h3>
-        <div className="right-0">
-          ${place.price}
+        <div className="mt-3 flex justify-between">
+            <div>
+            <h4 className="pb-0">{place.category}</h4>
+            <h2 className="font-bold font-body text-xl truncate ">{place.title}</h2>
+            <h3 className="font-body">{place.address}</h3>
+            </div>
+            <div className=" font-semibold text-secondary right-0 mr-6">
+              ${place.price}
+            </div>
         </div>
       </Link>
     ))}
