@@ -8,6 +8,7 @@ export default function Header({category, setCategoryValue}) {
   const {user} = useContext(UserContext);
   const [places, setPlaces] = useState([]);
   
+  const [searchText, setSearchText] = useState('');
 
   const handleChange = (e) => {
     setCategoryValue(e.target.value);
@@ -28,14 +29,19 @@ export default function Header({category, setCategoryValue}) {
         </Link>
       </div>
         {/* the search */}
-      <div className="flex justify-between gap-5 mt-5 sm:mt-2">
-        <div className='flex gap-2 border border-gray-300 rounded-full py-2 px-4 shadow-md shadow-gray-300'>
-          <button className='bg-primary text-white p-1 rounded-full'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-            </svg>
-          </button>
-        </div>
+      <div className="flex justify-center gap-5 mt-5 sm:mt-2">
+        
+      <div className="relative">
+        <svg fill="#000000" width="20px" height="20px" viewBox="0 0 1920 1920" xmlns="http://www.w3.org/2000/svg" className="hover:cursor-pointer absolute top-1/2 right-3 transform -translate-y-1/2">
+          <path d="M790.588 1468.235c-373.722 0-677.647-303.924-677.647-677.647 0-373.722 303.925-677.647 677.647-677.647 373.723 0 677.647 303.925 677.647 677.647 0 373.723-303.924 677.647-677.647 677.647Zm596.781-160.715c120.396-138.692 193.807-319.285 193.807-516.932C1581.176 354.748 1226.428 0 790.588 0S0 354.748 0 790.588s354.748 790.588 790.588 790.588c197.647 0 378.24-73.411 516.932-193.807l516.028 516.142 79.963-79.963-516.142-516.028Z" fill-rule="evenodd"></path>
+        </svg>
+        <input 
+         type="text"
+         placeholder="Search" 
+         name="text" 
+         onChange={e => setSearchText(e.target.value)}
+         className="input pr-12"/>
+      </div>
 
           <div className='flex gap-2 border border-gray-300 rounded py-1 px-2 shadow-md shadow-gray-300'>
               <select

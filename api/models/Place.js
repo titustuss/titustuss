@@ -12,6 +12,7 @@ const placeSchema = new mongoose.Schema({
     perks:[String],
     extraInfo: String,
     website:String,
+    youtube:String,
     latitude: Number,
     longitude: Number,
     price: Number
