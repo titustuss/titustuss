@@ -367,7 +367,7 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4">          
                 {preInput('Contact','Enter your contact')}
-                    <select defaultValue={countryPhone} className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
+                    <select className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
                         {countryPhone.length > 0 && countryPhone.map((contactCode, index) => (
                                 <option key={index} value={contactCode}>{contactCode}</option>
                             ))}
