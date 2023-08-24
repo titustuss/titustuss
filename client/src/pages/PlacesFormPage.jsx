@@ -57,6 +57,19 @@ export default function PlacesFormPage (){
         .catch(error => console.error('Error fetching data:', error));
 
         if(!id){
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                setLatitude(lat);
+                setLongitude(lng);
+                setPositionLoaded(true);
+            }, (err) => {
+                if(err.code === 1){
+                    alert("Kindly Allow Geolocation For Business Location Determination");
+                }else{
+                    alert("Location Cannot Be Determined");
+                }
+            });
             return;
         }
         axios.get('/places/'+ id)
@@ -74,29 +87,10 @@ export default function PlacesFormPage (){
             setWebsite(data.website);
             setYoutube(data.youtube);
             setPrice(data.price);
-            if(!data.latitude || !data.longitude){
-                navigator.geolocation.getCurrentPosition((pos) => {
-                    const lat = pos.coords.latitude;
-                    const lng = pos.coords.longitude;
-                    setLatitude(lat);
-                    setLongitude(lng);
-                    console.log("Here");
-                    setPositionLoaded(true);
-                }, (err) => {
-                    if(err.code === 1){
-                        alert("Kindly Allow Geolocation For Business Location Determination");
-                    }else{
-                        alert("Location Cannot Be Determined");
-                    }
-                });
-            }
         });
 
     },[id]);
 
-    function myTest(){
-        console.log(countryPhone);
-    }
 
     function inputHeader(text) {
         return(
@@ -123,7 +117,6 @@ export default function PlacesFormPage (){
         e.preventDefault();
         const filename =await axios.post('/upload-by-link', {link: photoLink})
         setAddedPhotos(prev => [...prev, filename.data]);
-        console.log(addedPhotos);
         setPhotoLink('');
     }
   
@@ -221,7 +214,6 @@ export default function PlacesFormPage (){
         const placeData={
             title,address, category, addedPhotos,
             description,contact,email,perks, extraInfo,website,youtube, latitude, longitude, price}
-            console.log(placeData);
         if(id){
             // update
             await axios.put('/places',{
@@ -246,7 +238,6 @@ export default function PlacesFormPage (){
     async function removePhoto (e,filename){
         e.preventDefault();
         const publicId = filename.split("/")[7].split(".")[0];
-        console.log(publicId);
         setAddedPhotos([...addedPhotos.filter(photo => photo !== filename)]);
         await axios.post('/get-public-id', {publicId: publicId});
     }
@@ -408,9 +399,6 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4">
 
-                {preInput('Location')}
-                <MapComponent latitude={latitude} longitude={longitude} positionLoaded={positionLoaded} setLatitude={setLatitude} setLongitude={setLongitude} />
-
                 {preInput('Your Website','Enter the url of your website if have one')}
                     <input type="text" value={website} onChange={e=>setWebsite(e.target.value)}
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
@@ -426,7 +414,7 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4 ">
                 {preInput('Location', 'be at the property to grab the location automatically')}
-                <div className="mt-3"><MapComponent latitude={latitude} longitude={longitude} setLatitude={setLatitude} setLongitude={setLongitude} /></div>
+                <div className="mt-3"><MapComponent latitude={latitude} longitude={longitude} positionLoaded={positionLoaded} setLatitude={setLatitude} setLongitude={setLongitude} /></div>
             </div>
             <div className="form-control mb-4 ">
                 {preInput('Property Price','the price of your property')}
@@ -449,7 +437,6 @@ export default function PlacesFormPage (){
 }
 
 function MapComponent({latitude, longitude, positionLoaded, setLatitude, setLongitude}){
-    console.log(latitude);
 
     const handleMarkerDragEnd = (event) => {
         const newPosition = event.target.getLatLng();
