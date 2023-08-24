@@ -43,9 +43,6 @@ export default function PlacesFormPage (){
     const [youtube, setYoutube]= useState('');
 
     useEffect(()=>{
-        if(!id){
-            return;
-        }
         fetch('http://localhost:5173/src/pages/countrydata.json')
         .then(response => response.json())
         .then(data => {
@@ -59,6 +56,9 @@ export default function PlacesFormPage (){
         })
         .catch(error => console.error('Error fetching data:', error));
 
+        if(!id){
+            return;
+        }
         axios.get('/places/'+ id)
         .then(response=>{
             const {data} = response;
@@ -94,7 +94,9 @@ export default function PlacesFormPage (){
 
     },[id]);
 
-
+    function myTest(){
+        console.log(countryPhone);
+    }
 
     function inputHeader(text) {
         return(
@@ -428,7 +430,7 @@ export default function PlacesFormPage (){
             </div>
             <div className="form-control mb-4 ">
                 {preInput('Property Price','the price of your property')}
-                <select defaultValue={currency}>
+                <select>
                     {currency.length > 0 && currency.map(tender => (
                             <option value={tender}>{tender}</option>
                         ))}
