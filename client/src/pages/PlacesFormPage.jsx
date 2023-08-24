@@ -7,30 +7,40 @@ import 'leaflet/dist/leaflet.css';
 import axios from "axios";
 
 export default function PlacesFormPage (){
-    const {id} =useParams();
-    const [title, setTitle] = useState('');
-    const [address, setAddress] = useState('');
-    const [category, setCategory] = useState('apartment');
     const [addedPhotos, setAddedPhotos] = useState([]);
-    const [photoLink, setPhotoLink] = useState('');
-    const [description, setDescription] =useState('');
-    const [contact,setContact] = useState(+254);
-    const [email,setEmail] = useState('')
-    const [perks,setPerks] = useState([]);
+    const [address, setAddress] = useState('');
+
+    const [category, setCategory] = useState('apartment');
+    const [contact, setContact] = useState(+254);
+    const [countryPhone, setCountryPhone] = useState([]);
+    const [currency, setCurrency] = useState([]);
+
+    const [description, setDescription] = useState('');
+
+    const [email,setEmail] = useState('');
     const [extraInfo, setExtraInfo]= useState('');
-    const [website, setWebsite]= useState('');
-    const [youtube, setYoutube]= useState('');
-    const [price,setPrice] = useState(1000);
+
     const [fileInputState, setFileInputState] = useState();
-    const [previewSources ,setPreviewSources] = useState([]);
-    const [redirect,setRedirect]= useState(false);
-    const [uploadedPhotos, setUploadedPhotos] = useState([]);
+
+    const {id} = useParams();
+
     const [latitude, setLatitude] = useState();
     const [longitude, setLongitude] = useState();
-    const [positionLoaded, setPositionLoaded] = useState(false);
-    const [currency, setCurrency] = useState([]);
-    const [countryPhone, setCountryPhone] = useState([]);
 
+    const [perks, setPerks] = useState([]);
+    const [photoLink, setPhotoLink] = useState('');
+    const [positionLoaded, setPositionLoaded] = useState(false);
+    const [previewSources, setPreviewSources] = useState([]);
+    const [price, setPrice] = useState(1000);
+
+    const [redirect,setRedirect]= useState(false);
+    
+    const [title, setTitle] = useState('');
+    
+    const [uploadedPhotos, setUploadedPhotos] = useState([]);
+    
+    const [website, setWebsite]= useState('');
+    const [youtube, setYoutube]= useState('');
 
     useEffect(()=>{
         if(!id){
@@ -70,6 +80,7 @@ export default function PlacesFormPage (){
                     const lng = pos.coords.longitude;
                     setLatitude(lat);
                     setLongitude(lng);
+                    console.log("Here");
                     setPositionLoaded(true);
                 }, (err) => {
                     if(err.code === 1){
@@ -250,6 +261,7 @@ export default function PlacesFormPage (){
             <AccountNav/>
             </div>
         <form onSubmit={savePlace} className="md-8">
+            
             <div className="bg-white p-4 rounded-lg shadow-lg relative showcase-form max-w-screen-2xl">
             <div className="form-control mb-4">
         
@@ -435,6 +447,7 @@ export default function PlacesFormPage (){
 }
 
 function MapComponent({latitude, longitude, positionLoaded, setLatitude, setLongitude}){
+    console.log(latitude);
 
     const handleMarkerDragEnd = (event) => {
         const newPosition = event.target.getLatLng();
