@@ -368,8 +368,8 @@ export default function PlacesFormPage (){
             <div className="form-control mb-4">          
                 {preInput('Contact','Enter your contact')}
                     <select defaultValue={countryPhone} className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
-                        {countryPhone.length > 0 && countryPhone.map(contactCode => (
-                                <option value={contactCode}>{contactCode}</option>
+                        {countryPhone.length > 0 && countryPhone.map((contactCode, index) => (
+                                <option key={index} value={contactCode}>{contactCode}</option>
                             ))}
                     </select>
                     <input type="number" value={contact} onChange={e=>setContact(e.target.value)} required
@@ -419,8 +419,8 @@ export default function PlacesFormPage (){
             <div className="form-control mb-4 ">
                 {preInput('Property Price','the price of your property')}
                 <select>
-                    {currency.length > 0 && currency.map(tender => (
-                            <option value={tender}>{tender}</option>
+                    {currency.length > 0 && currency.map((tender, index) => (
+                            <option key={index} value={tender}>{tender}</option>
                         ))}
                 </select>
                 <input type="number" value={price} onChange={e=>setPrice(e.target.value)}required
