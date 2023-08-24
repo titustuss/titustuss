@@ -57,7 +57,7 @@ export default function PlacesPage(){
                             </div>
                             <div className="grow-0 shrink">
                             <h2 className="text-xl">{place.title}</h2>
-                            <p class="text-sm overflow-hidden line-clamp-3">
+                            <p className="text-sm overflow-hidden line-clamp-3">
                             {place.description}
                             </p>
                             </div>
