@@ -36,7 +36,7 @@ return (
             <h3 className="font-body">{place.address}</h3>
             </div>
             <div className=" font-semibold text-secondary right-0 mr-6">
-              ${place.price}
+              {place.currency.split("-")[1]}{place.price}
             </div>
         </div>
       </Link>
