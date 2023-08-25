@@ -138,7 +138,7 @@ export default function PlacePage(){
                         </div>
                     </a>
                     <a href={`mailto:${place.email}`} className="flex items-center mb-2">
-                        <span className="mr-2">{place.contact}</span>
+                        <span className="mr-2">{place.email}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/email.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800">EMAIL</h1>

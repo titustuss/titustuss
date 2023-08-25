@@ -7,30 +7,70 @@ import 'leaflet/dist/leaflet.css';
 import axios from "axios";
 
 export default function PlacesFormPage (){
-    const {id} =useParams();
-    const [title, setTitle] = useState('');
-    const [address, setAddress] = useState('');
-    const [category, setCategory] = useState('apartment');
     const [addedPhotos, setAddedPhotos] = useState([]);
-    const [photoLink, setPhotoLink] = useState('');
-    const [description, setDescription] =useState('');
-    const [contact,setContact] = useState(+254);
-    const [email,setEmail] = useState('')
-    const [perks,setPerks] = useState([]);
+    const [address, setAddress] = useState('');
+
+    const [category, setCategory] = useState('apartment');
+    const [contact, setContact] = useState(+254);
+    const [contactCode, setContactCode] = useState('');
+    const [countryPhone, setCountryPhone] = useState([]);
+    const [currency, setCurrency] = useState([]);
+
+    const [description, setDescription] = useState('');
+
+    const [email,setEmail] = useState('');
     const [extraInfo, setExtraInfo]= useState('');
-    const [website, setWebsite]= useState('');
-    const [youtube, setYoutube]= useState('');
-    const [price,setPrice] = useState(1000);
+
     const [fileInputState, setFileInputState] = useState();
-    const [previewSources ,setPreviewSources] = useState([]);
-    const [redirect,setRedirect]= useState(false);
-    const [uploadedPhotos, setUploadedPhotos] = useState([]);
+
+    const {id} = useParams();
+
     const [latitude, setLatitude] = useState();
     const [longitude, setLongitude] = useState();
 
+    const [perks, setPerks] = useState([]);
+    const [photoLink, setPhotoLink] = useState('');
+    const [positionLoaded, setPositionLoaded] = useState(false);
+    const [previewSources, setPreviewSources] = useState([]);
+    const [price, setPrice] = useState(1000);
+
+    const [redirect,setRedirect]= useState(false);
+    
+    const [title, setTitle] = useState('');
+    
+    const [uploadedPhotos, setUploadedPhotos] = useState([]);
+    
+    const [website, setWebsite]= useState('');
+    const [youtube, setYoutube]= useState('');
 
     useEffect(()=>{
+        fetch('http://localhost:5173/src/pages/countrydata.json')
+        .then(response => response.json())
+        .then(data => {
+            for (const countryData of data) {
+                for(const currencyCode in countryData.currencies){
+                    setCurrency(prev => [...prev, currencyCode].sort());
+                }
+                let phoneCode = countryData.flag + " " + countryData.idd.root + countryData.idd.suffixes;
+                setCountryPhone(prev => [...prev, phoneCode]);
+            }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+
         if(!id){
+            navigator.geolocation.getCurrentPosition((pos) => {
+                const lat = pos.coords.latitude;
+                const lng = pos.coords.longitude;
+                setLatitude(lat);
+                setLongitude(lng);
+                setPositionLoaded(true);
+            }, (err) => {
+                if(err.code === 1){
+                    alert("Kindly Allow Geolocation For Business Location Determination");
+                }else{
+                    alert("Location Cannot Be Determined");
+                }
+            });
             return;
         }
         axios.get('/places/'+ id)
@@ -48,9 +88,8 @@ export default function PlacesFormPage (){
             setWebsite(data.website);
             setYoutube(data.youtube);
             setPrice(data.price);
-            setLatitude(data.latitude);
-            setLongitude(data.longitude);
-        })
+        });
+
     },[id]);
 
 
@@ -79,7 +118,6 @@ export default function PlacesFormPage (){
         e.preventDefault();
         const filename =await axios.post('/upload-by-link', {link: photoLink})
         setAddedPhotos(prev => [...prev, filename.data]);
-        console.log(addedPhotos);
         setPhotoLink('');
     }
   
@@ -176,8 +214,7 @@ export default function PlacesFormPage (){
         // Upload all the previewed photos
         const placeData={
             title,address, category, addedPhotos,
-            description,contact,email,perks, extraInfo,website,youtube, latitude, longitude, price}
-            console.log(placeData);
+            description, contactCode, contact, email, perks, extraInfo, website, youtube, latitude, longitude, price}
         if(id){
             // update
             await axios.put('/places',{
@@ -202,7 +239,6 @@ export default function PlacesFormPage (){
     async function removePhoto (e,filename){
         e.preventDefault();
         const publicId = filename.split("/")[7].split(".")[0];
-        console.log(publicId);
         setAddedPhotos([...addedPhotos.filter(photo => photo !== filename)]);
         await axios.post('/get-public-id', {publicId: publicId});
     }
@@ -219,8 +255,11 @@ export default function PlacesFormPage (){
             <AccountNav/>
             </div>
         <form onSubmit={savePlace} className="md-8">
+            
             <div className="bg-white p-4 rounded-lg shadow-lg relative showcase-form max-w-screen-2xl">
             <div className="form-control mb-4">
+        
+
             {preInput('Title','Title for your property, should be short and catchy')}
                 <input type="text" value={title} onChange={e=>setTitle(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" 
@@ -328,10 +367,15 @@ export default function PlacesFormPage (){
             </div>
 
             <div className="form-control mb-4">          
-                {preInput('Contact','Enter your contact')} 
+                {preInput('Contact','Enter your contact')}
+                    <select className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" onChange={e => setContactCode(e.target.value)}>
+                        {countryPhone.length > 0 && countryPhone.map((contactCode, index) => (
+                                <option key={index} value={contactCode}>{contactCode}</option>
+                            ))}
+                    </select>
                     <input type="number" value={contact} onChange={e=>setContact(e.target.value)} required
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
-                    placeholder="Enter phone number"></input>
+                    placeholder="Enter phone number" minLength={9} maxLength={10}></input>
             </div> 
 
             <div className="form-control mb-4">
@@ -355,6 +399,7 @@ export default function PlacesFormPage (){
             </div>
 
             <div className="form-control mb-4">
+
                 {preInput('Your Website','Enter the url of your website if have one')}
                     <input type="text" value={website} onChange={e=>setWebsite(e.target.value)}
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
@@ -370,10 +415,15 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4 ">
                 {preInput('Location', 'be at the property to grab the location automatically')}
-                <div className="mt-3"><MapComponent latitude={latitude} longitude={longitude} setLatitude={setLatitude} setLongitude={setLongitude} /></div>
+                <div className="mt-3"><MapComponent latitude={latitude} longitude={longitude} positionLoaded={positionLoaded} setLatitude={setLatitude} setLongitude={setLongitude} /></div>
             </div>
             <div className="form-control mb-4 ">
                 {preInput('Property Price','the price of your property')}
+                <select>
+                    {currency.length > 0 && currency.map((tender, index) => (
+                            <option key={index} value={tender}>{tender}</option>
+                        ))}
+                </select>
                 <input type="number" value={price} onChange={e=>setPrice(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
                 </input>
@@ -387,26 +437,7 @@ export default function PlacesFormPage (){
 
 }
 
-function MapComponent({latitude, longitude, setLatitude, setLongitude}){
-    const [positionLoaded, setPositionLoaded] = useState(false);
-
-    // GeoLocation
-    useEffect(() => {
-        console.log(latitude);
-        navigator.geolocation.getCurrentPosition((pos) => {
-            const lat = pos.coords.latitude;
-            const lng = pos.coords.longitude;
-            setLatitude(lat);
-            setLongitude(lng);
-            setPositionLoaded(true);
-        }, (err) => {
-            if(err.code === 1){
-                alert("Kindly Allow Geolocation For Business Location Determination");
-            }else{
-                alert("Location Cannot Be Determined");
-            }
-        });
-    }, [])
+function MapComponent({latitude, longitude, positionLoaded, setLatitude, setLongitude}){
 
     const handleMarkerDragEnd = (event) => {
         const newPosition = event.target.getLatLng();
