@@ -34,7 +34,6 @@ return (
         {index >= current && index < current+10 && (
           <Link to={'/place/' + place._id}>
           <div className="grid grap-16 grid-cols-fluid">
-            <h4>{index}</h4>
           {place.photos?.[0] && (
             <img className="rounded-2xl object-cover aspect-square" src={place.photos?.[0]} alt="" />
           )}
@@ -59,8 +58,10 @@ return (
           <div className="flex gap-2 mt-3 flex-wrap">
             <button
                onClick={() => {
-                setCurrent((prev) => prev - 10);
-                setPageCount(prev => prev - 1);
+                if(pageCount > 1){
+                  setCurrent((prev) => prev - 10);
+                  setPageCount(prev => prev - 1);
+                }
               }}
                className={`py-2 px-4 rounded bg-blue-500 text-white ${
                  !(pageCount > 1) && "opacity-50 cursor-not-allowed"
@@ -73,11 +74,13 @@ return (
             </div>
             <button
                onClick={() => {
-                setCurrent((prev) => prev + 10);
-                setPageCount(prev => prev + 1);
+                if(pageCount < pageCounter()){
+                  setCurrent((prev) => prev + 10);
+                  setPageCount(prev => prev + 1);
+                }
               }}
                className={`py-2 px-4 rounded bg-blue-500 text-white ${
-                 current === pageCount && "opacity-50 cursor-not-allowed"
+                 pageCount === pageCounter() && "opacity-50 cursor-not-allowed"
                }`}
             >
               Next
