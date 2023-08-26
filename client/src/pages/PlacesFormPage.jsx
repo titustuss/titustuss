@@ -12,9 +12,9 @@ export default function PlacesFormPage (){
 
     const [category, setCategory] = useState('apartment');
     const [contact, setContact] = useState(+254);
-    const [contactCode, setContactCode] = useState('');
+    const [contactCode, setContactCode] = useState("🇨🇦 +1");
     const [countryPhone, setCountryPhone] = useState([]);
-    const [currency, setCurrency] = useState();
+    const [currency, setCurrency] = useState("AED - د.إ");
     const [currencies, setCurrencies] = useState([]);
 
     const [description, setDescription] = useState('');
@@ -97,9 +97,11 @@ export default function PlacesFormPage (){
             setTitle(data.title);
             setAddress(data.address);
             setAddedPhotos(data.photos);
-            setCategory(data.category)
+            setCategory(data.category);
+            setCurrency(data.currency);
             setDescription(data.description);
             setContact(data.contact);
+            setContactCode(data.contactCode);
             setEmail(data.email);
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
@@ -389,7 +391,7 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4">          
                 {preInput('Contact','Enter your contact')}
-                    <select className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" onChange={e => setContactCode(e.target.value)}>
+                    <select defaultValue={contactCode} className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" onChange={e => setContactCode(e.target.value)}>
                         {countryPhone.length > 0 && countryPhone.map((contactCode, index) => (
                                 <option key={index} value={contactCode}>{contactCode}</option>
                             ))}
