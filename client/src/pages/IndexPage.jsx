@@ -4,8 +4,8 @@ import { Link } from "react-router-dom";
 
 export default function IndexPage({category,searchText}){
   const [places,setPlaces] = useState([]);
-  const [current, setCurrent] = useState(1);
-  const [pageCount, setPageCount] = useState(10);
+  const [current, setCurrent] = useState(0);
+  const [pageCount, setPageCount] = useState(1);
   useEffect(()=>{
     axios.get('/places').then(response =>{
       setPlaces(response.data);
@@ -19,44 +19,63 @@ export default function IndexPage({category,searchText}){
   //     place.title.toLowerCase().includes(searchText.toLowerCase()) ||
   //     place.address.toLowerCase().includes(searchText.toLowerCase())
   // );
+
+  function pageCounter(){
+    if(filteredPlaces.length % 10 != 0){
+      return parseInt(filteredPlaces.length/10)+1;
+    }
+    return parseInt(filteredPlaces.length/10);
+  }
       
 return (
   <div className=" mt-8 grid gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 animate-slideup">
-    {filteredPlaces.length > 0 && filteredPlaces.map(place =>(
-      <Link to={'/place/' + place._id} key={place._id}>
-        <div className="grid grap-16 grid-cols-fluid">
-        {place.photos?.[0] && (
-          <img className="rounded-2xl object-cover aspect-square" src={place.photos?.[0]} alt="" />
+    {filteredPlaces.length > 0 && filteredPlaces.map((place, index) =>(
+      <span key={place._id}>
+        {index >= current && index < current+10 && (
+          <Link to={'/place/' + place._id}>
+          <div className="grid grap-16 grid-cols-fluid">
+            <h4>{index}</h4>
+          {place.photos?.[0] && (
+            <img className="rounded-2xl object-cover aspect-square" src={place.photos?.[0]} alt="" />
+          )}
+          </div>
+          <div className="mt-3 flex justify-between">
+              <div>
+              <h4 className="pb-0">{place.category}</h4>
+              <h2 className="font-bold font-body text-xl truncate ">{place.title}</h2>
+              <h3 className="font-body">{place.address}</h3>
+              </div>
+              <div className=" font-semibold text-secondary right-0 mr-6">
+                {place.currency.split("-")[1]}{place.price}
+              </div>
+          </div>
+        </Link>
         )}
-        </div>
-        <div className="mt-3 flex justify-between">
-            <div>
-            <h4 className="pb-0">{place.category}</h4>
-            <h2 className="font-bold font-body text-xl truncate ">{place.title}</h2>
-            <h3 className="font-body">{place.address}</h3>
-            </div>
-            <div className=" font-semibold text-secondary right-0 mr-6">
-              {place.currency.split("-")[1]}{place.price}
-            </div>
-        </div>
-      </Link>
+      
+      </span>
     ))}
 
         {places.length > 0 && (
           <div className="flex gap-2 mt-3 flex-wrap">
             <button
-               onClick={() => setCurrent((prev) => prev - 1)}
+               onClick={() => {
+                setCurrent((prev) => prev - 10);
+                setPageCount(prev => prev - 1);
+              }}
                className={`py-2 px-4 rounded bg-blue-500 text-white ${
-                 !(current > 1) && "opacity-50 cursor-not-allowed"
+                 !(pageCount > 1) && "opacity-50 cursor-not-allowed"
                }`}
             >
               Previous
             </button>
             <div className="hidden sm:flex items-center gap-2">
-              Page <strong>{current} of {pageCount}</strong>
+              Page <strong>{pageCount} of {pageCounter()}</strong>
             </div>
             <button
-               onClick={() => setCurrent((prev) => prev + 1)}
+               onClick={() => {
+                setCurrent((prev) => prev + 10);
+                setPageCount(prev => prev + 1);
+              }}
                className={`py-2 px-4 rounded bg-blue-500 text-white ${
                  current === pageCount && "opacity-50 cursor-not-allowed"
                }`}
