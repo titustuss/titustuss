@@ -51,8 +51,25 @@ export default function PlacesFormPage (){
                 for(const currencyCode in countryData.currencies){
                     setCurrency(prev => [...prev, currencyCode].sort());
                 }
-                let phoneCode = countryData.flag + " " + countryData.idd.root + countryData.idd.suffixes;
-                setCountryPhone(prev => [...prev, phoneCode]);
+                
+                if(!countryData.idd.suffixes){
+                    console.log("Have A Wonderful Day");
+                }else{
+                    if(countryData.idd.suffixes.length > 1){
+                        for(const suff of countryData.idd.suffixes){
+                            let phoneCode = countryData.flag + " " + countryData.idd.root + suff;
+                            setCountryPhone(prev => [...new Set([...prev, phoneCode].sort((a, b)=> parseInt(a.split("+")[1]) - parseInt(b.split("+")[1])))]);
+                        }
+                    }else{
+                        let phoneCode = countryData.flag + " " + countryData.idd.root + countryData.idd.suffixes;
+                        setCountryPhone(prev => [...new Set([...prev, phoneCode].sort((a, b)=> parseInt(a.split("+")[1]) - parseInt(b.split("+")[1])))]);
+                    }
+                    
+                }
+                
+                
+                
+                
             }
         })
         .catch(error => console.error('Error fetching data:', error));
