@@ -120,28 +120,28 @@ export default function PlacePage(){
                         <span className="mr-2">{place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/phone.svg'} alt="" className="w-6 h-6 mr-2" />
-                            <h1 className="text-md font-medium text-gray-800 hover:text-green-500">PHONE</h1>
+                            <h1 className="text-md font-medium text-gray-800 hover:text-green-700">PHONE</h1>
                         </div>
                     </a>
                     <a href={`sms:${place.contact}`} className="flex items-center mb-2">
                         <span className="mr-2">{place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/message.svg'} alt="" className="w-6 h-6 mr-2" />
-                            <h1 className="text-md font-medium text-gray-800">MESSAGE</h1>
+                            <h1 className="text-md font-medium text-gray-800 hover:text-blue-600">MESSAGE</h1>
                         </div>
                     </a>
                     <a href={`https://wa.me/${place.contact}`} target="_blank" rel="noopener noreferrer" className="flex items-center mb-2">
                         <span className="mr-2">{place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/whatsapp.svg'} alt="" className="w-6 h-6 mr-2" />
-                            <h1 className="text-md font-medium text-gray-800">WHATSAPP</h1>
+                            <h1 className="text-md font-medium text-gray-800 hover:text-green-500">WHATSAPP</h1>
                         </div>
                     </a>
                     <a href={`mailto:${place.email}`} className="flex items-center mb-2">
                         <span className="mr-2">{place.email}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/email.svg'} alt="" className="w-6 h-6 mr-2" />
-                            <h1 className="text-md font-medium text-gray-800">EMAIL</h1>
+                            <h1 className="text-md font-medium text-gray-800 hover:text-blue-400">EMAIL</h1>
                         </div>
                     </a>
                 </div>
