@@ -11,7 +11,7 @@ export default function PlacesFormPage (){
     const [address, setAddress] = useState('');
 
     const [category, setCategory] = useState('apartment');
-    const [contact, setContact] = useState(+254);
+    const [contact, setContact] = useState();
     const [contactCode, setContactCode] = useState("🇨🇦 +1");
     const [countryPhone, setCountryPhone] = useState([]);
     const [currency, setCurrency] = useState("AED - د.إ");
