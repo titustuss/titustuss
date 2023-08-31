@@ -13,6 +13,7 @@ export default function IndexPage({category,searchText}){
   },[]);
 
   const filteredPlaces = places.filter(place => (category === "all" || place.category.toLowerCase() === category));
+  const currentPagePlaces = filteredPlaces.slice(current, current+10);
   
   // const filteredPlacesWithSearch = filteredPlaces.filter(
   //   place =>
@@ -29,9 +30,8 @@ export default function IndexPage({category,searchText}){
       
 return (
   <div className=" mt-8 grid gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 animate-slideup">
-    {filteredPlaces.length > 0 && filteredPlaces.map((place, index) =>(
+    {currentPagePlaces.length > 0 && currentPagePlaces.map((place, index) =>(
       <span key={place._id}>
-        {index >= current && index < current+10 && (
           <Link to={'/place/' + place._id}>
           <div className="grid grap-16 grid-cols-fluid">
           {place.photos?.[0] && (
@@ -49,7 +49,6 @@ return (
               </div>
           </div>
         </Link>
-        )}
       
       </span>
     ))}
@@ -85,17 +84,7 @@ return (
             >
               Next
             </button>
-            {/* <select
-              // value={pageSize}
-              // onChange={(e) => setPageSize(e.target.value ? Number(e.target.value) : 10)}
-              // className="border border-gray-300 py-1 px-2 text-base focus:outline-none"
-            >
-              {[10, 20, 30, 40, 50].map((size) => (
-                <option key={size} value={size}>
-                  Show {size}
-                </option>
-              ))}
-            </select> */}
+            
           </div>
         )}
 
