@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from 'axios';
 import { Link } from "react-router-dom";
 
-export default function IndexPage({category,searchText}){
+export default function IndexPage({category, searchInput}){
   const [places,setPlaces] = useState([]);
   const [current, setCurrent] = useState(0);
   const [pageCount, setPageCount] = useState(1);
@@ -12,9 +12,11 @@ export default function IndexPage({category,searchText}){
     })
   },[]);
 
-  const filteredPlaces = places.filter(place => (category === "all" || place.category.toLowerCase() === category));
-  const currentPagePlaces = filteredPlaces.slice(current, current+10);
+  const categoryFilteredPlaces = places.filter(place => (category === "all" || place.category.toLowerCase() === category));
+  const searchFilteredPlaces = categoryFilteredPlaces.filter( place => (searchInput == "" || place.title.toLowerCase() == searchInput.toLowerCase() ))
+  const currentPagePlaces = searchFilteredPlaces.slice(current, current+10);
   
+
   // const filteredPlacesWithSearch = filteredPlaces.filter(
   //   place =>
   //     place.title.toLowerCase().includes(searchText.toLowerCase()) ||
@@ -22,10 +24,10 @@ export default function IndexPage({category,searchText}){
   // );
 
   function pageCounter(){
-    if(filteredPlaces.length % 10 != 0){
-      return parseInt(filteredPlaces.length/10)+1;
+    if(currentPagePlaces.length % 10 != 0){
+      return parseInt(currentPagePlaces.length/10)+1;
     }
-    return parseInt(filteredPlaces.length/10);
+    return parseInt(currentPagePlaces.length/10);
   }
       
 return (

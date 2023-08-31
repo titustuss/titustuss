@@ -18,16 +18,21 @@ axios.defaults.withCredentials = true;
 function App() {
 
   const [category, setCategory] = useState("all");
+  const [searchInput, setSearchInput] = useState("");
 
   const setCategoryValue = (value) =>{
     setCategory(value);
   }
 
+  const setSearchInputValue = (value) =>{
+    setSearchInput(value);
+  }
+
   return (
      <UserContextProvider>
      <Routes>
-      <Route path='/' element={<Layout category={category} setCategoryValue={setCategoryValue}/>}>
-        <Route index element={ <IndexPage category={category}/>}/>
+      <Route path='/' element={<Layout category={category} setCategoryValue={setCategoryValue} searchInput={searchInput} setSearchInputValue={setSearchInputValue}/>}>
+        <Route index element={ <IndexPage category={category} searchInput={searchInput}/>}/>
         <Route path="/login" element={<LoginPage/>}/>
         <Route path="/register" element={<RegisterPage/>}/>
         <Route path='/account' element={<AccountPage/>}/>
