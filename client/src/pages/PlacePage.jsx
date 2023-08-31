@@ -117,21 +117,21 @@ export default function PlacePage(){
                 <div className="my-4 mx-auto bg-white p-4 rounded-lg shadow-lg mb-3 max-w-sm">
                     <h1 className="font-semibold text-secondary font-body text-2xl mb-4">Contact us</h1>
                     <a href={`tel:${place.contact}`} className="flex items-center mb-2">
-                        <span className="mr-2">{place.contact}</span>
+                        <span className="mr-2">({place.contactCode}) {place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/phone.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800 hover:text-green-700">PHONE</h1>
                         </div>
                     </a>
                     <a href={`sms:${place.contact}`} className="flex items-center mb-2">
-                        <span className="mr-2">{place.contact}</span>
+                        <span className="mr-2">({place.contactCode}) {place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/message.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800 hover:text-blue-600">MESSAGE</h1>
                         </div>
                     </a>
                     <a href={`https://wa.me/${place.contact}`} target="_blank" rel="noopener noreferrer" className="flex items-center mb-2">
-                        <span className="mr-2">{place.contact}</span>
+                        <span className="mr-2">({place.contactCode}) {place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/whatsapp.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800 hover:text-green-500">WHATSAPP</h1>

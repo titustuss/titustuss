@@ -16,6 +16,7 @@ const placeSchema = new mongoose.Schema({
     youtube:String,
     latitude: Number,
     longitude: Number,
+    currency: String,
     price: Number
 });
 

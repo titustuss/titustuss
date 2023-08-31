@@ -11,10 +11,11 @@ export default function PlacesFormPage (){
     const [address, setAddress] = useState('');
 
     const [category, setCategory] = useState('apartment');
-    const [contact, setContact] = useState(+254);
-    const [contactCode, setContactCode] = useState('');
+    const [contact, setContact] = useState();
+    const [contactCode, setContactCode] = useState("🇨🇦 +1");
     const [countryPhone, setCountryPhone] = useState([]);
-    const [currency, setCurrency] = useState([]);
+    const [currency, setCurrency] = useState("AED - د.إ");
+    const [currencies, setCurrencies] = useState([]);
 
     const [description, setDescription] = useState('');
 
@@ -49,7 +50,7 @@ export default function PlacesFormPage (){
         .then(data => {
             for (const countryData of data) {
                 for(const currencyCode in countryData.currencies){
-                    setCurrency(prev => [...prev, currencyCode].sort());
+                    setCurrencies(prev => [...new Set([...prev, currencyCode+" - "+countryData.currencies[currencyCode].symbol].sort())]);
                 }
                 
                 if(!countryData.idd.suffixes){
@@ -96,15 +97,20 @@ export default function PlacesFormPage (){
             setTitle(data.title);
             setAddress(data.address);
             setAddedPhotos(data.photos);
-            setCategory(data.category)
+            setCategory(data.category);
+            setCurrency(data.currency);
             setDescription(data.description);
             setContact(data.contact);
+            setContactCode(data.contactCode);
             setEmail(data.email);
             setPerks(data.perks);
             setExtraInfo(data.extraInfo);
             setWebsite(data.website);
             setYoutube(data.youtube);
             setPrice(data.price);
+            setLatitude(data.latitude);
+            setLongitude(data.longitude);
+            setPositionLoaded(true);
         });
 
     },[id]);
@@ -231,7 +237,7 @@ export default function PlacesFormPage (){
         // Upload all the previewed photos
         const placeData={
             title,address, category, addedPhotos,
-            description, contactCode, contact, email, perks, extraInfo, website, youtube, latitude, longitude, price}
+            description, contactCode, contact, email, perks, extraInfo, website, youtube, latitude, longitude, currency, price}
         if(id){
             // update
             await axios.put('/places',{
@@ -385,7 +391,7 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4">          
                 {preInput('Contact','Enter your contact')}
-                    <select className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" onChange={e => setContactCode(e.target.value)}>
+                    <select defaultValue={contactCode} className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" onChange={e => setContactCode(e.target.value)}>
                         {countryPhone.length > 0 && countryPhone.map((contactCode, index) => (
                                 <option key={index} value={contactCode}>{contactCode}</option>
                             ))}
@@ -436,8 +442,8 @@ export default function PlacesFormPage (){
             </div>
             <div className="form-control mb-4 ">
                 {preInput('Property Price','the price of your property')}
-                <select>
-                    {currency.length > 0 && currency.map((tender, index) => (
+                <select onChange={e => setCurrency(e.target.value)}>
+                    {currencies.length > 0 && currencies.map((tender, index) => (
                             <option key={index} value={tender}>{tender}</option>
                         ))}
                 </select>
