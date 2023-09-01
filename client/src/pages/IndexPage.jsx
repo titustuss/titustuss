@@ -24,10 +24,10 @@ export default function IndexPage({category, searchInput}){
   // );
 
   function pageCounter(){
-    if(currentPagePlaces.length % 10 != 0){
-      return parseInt(currentPagePlaces.length/10)+1;
+    if(searchFilteredPlaces.length % 10 != 0){
+      return parseInt(searchFilteredPlaces.length/10)+1;
     }
-    return parseInt(currentPagePlaces.length/10);
+    return parseInt(searchFilteredPlaces.length/10);
   }
       
 return (
