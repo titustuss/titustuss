@@ -31,7 +31,8 @@ export default function IndexPage({category, searchInput}){
   }
       
 return (
-  <div className=" mt-8 grid gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 animate-slideup">
+  <div>
+  <div className="mx-4 mt-8 grid gap-x-6 gap-y-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-7 animate-slideup">
     {currentPagePlaces.length > 0 && currentPagePlaces.map((place, index) =>(
       <span key={place._id}>
           <Link to={'/place/' + place._id}>
@@ -46,50 +47,57 @@ return (
               <h2 className="font-bold font-body text-xl truncate ">{place.title}</h2>
               <h3 className="font-body">{place.address}</h3>
               </div>
-              <div className=" font-semibold text-secondary right-0 mr-6">
-                {place.currency.split("-")[1]}{place.price}
+              <div className=" flex gap-1 font-semibold text-secondary right-0 mr-6">
+                <div>
+                {place.currency.split("-")[1]}
+                </div>
+                <div>
+                {place.price}
+                </div>
               </div>
           </div>
         </Link>
       
       </span>
     ))}
-
-        {places.length > 0 && (
-          <div className="flex gap-2 mt-3 flex-wrap">
-            <button
-               onClick={() => {
-                if(pageCount > 1){
-                  setCurrent((prev) => prev - 10);
-                  setPageCount(prev => prev - 1);
-                }
-              }}
-               className={`py-2 px-4 rounded bg-blue-500 text-white ${
-                 !(pageCount > 1) && "opacity-50 cursor-not-allowed"
-               }`}
-            >
-              Previous
-            </button>
-            <div className="hidden sm:flex items-center gap-2">
-              Page <strong>{pageCount} of {pageCounter()}</strong>
-            </div>
-            <button
-               onClick={() => {
-                if(pageCount < pageCounter()){
-                  setCurrent((prev) => prev + 10);
-                  setPageCount(prev => prev + 1);
-                }
-              }}
-               className={`py-2 px-4 rounded bg-blue-500 text-white ${
-                 pageCount === pageCounter() && "opacity-50 cursor-not-allowed"
-               }`}
-            >
-              Next
-            </button>
-            
-          </div>
-        )}
-
   </div>
+      <div>
+      {places.length > 0 && (
+              <div className="flex gap-2 mt-3 flex-wrap">
+                <button
+                  onClick={() => {
+                    if(pageCount > 1){
+                      setCurrent((prev) => prev - 10);
+                      setPageCount(prev => prev - 1);
+                    }
+                  }}
+                  className={`py-2 px-4 rounded bg-blue-500 text-white ${
+                    !(pageCount > 1) && "opacity-50 cursor-not-allowed"
+                  }`}
+                >
+                  Previous
+                </button>
+                <div className="sm:flex items-center gap-2">
+                  Page <strong>{pageCount} of {pageCounter()}</strong>
+                </div>
+                <button
+                  onClick={() => {
+                    if(pageCount < pageCounter()){
+                      setCurrent((prev) => prev + 10);
+                      setPageCount(prev => prev + 1);
+                    }
+                  }}
+                  className={`py-2 px-4 rounded bg-blue-500 text-white ${
+                    pageCount === pageCounter() && "opacity-50 cursor-not-allowed"
+                  }`}
+                >
+                  Next
+                </button>
+                
+              </div>
+            )}
+            </div>
+  </div>
+
 )
 }
