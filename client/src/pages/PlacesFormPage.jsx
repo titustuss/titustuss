@@ -391,14 +391,17 @@ export default function PlacesFormPage (){
 
             <div className="form-control mb-4">          
                 {preInput('Contact','Enter your contact')}
-                    <select defaultValue={contactCode} className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none" onChange={e => setContactCode(e.target.value)}>
+                    <div className="flex">
+                    <select defaultValue={contactCode} className="border-b-2 border-gray-300 w-28 sm:w-32 py-1 px-3 text-base focus:outline-none" onChange={e => setContactCode(e.target.value)}>
                         {countryPhone.length > 0 && countryPhone.map((contactCode, index) => (
                                 <option key={index} value={contactCode}>{contactCode}</option>
                             ))}
                     </select>
                     <input type="number" value={contact} onChange={e=>setContact(e.target.value)} required
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
-                    placeholder="Enter phone number" minLength={9} maxLength={10}></input>
+                    placeholder="Enter phone number" minLength={9} maxLength={10}>
+                    </input>
+                    </div>
             </div> 
 
             <div className="form-control mb-4">
@@ -430,10 +433,10 @@ export default function PlacesFormPage (){
             </div>
 
             <div className="form-control mb-4">
-                {preInput('Youtube Vedio','Enter the link of your Youtube video here')}
+                {preInput('Youtube Video','Enter the link of your Youtube video here')}
                     <input type="text" value={youtube} onChange={e=>setYoutube(e.target.value)}
                     className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none"
-                    placeholder="https://youryoutubevedio"/>
+                    placeholder="https://youryoutubevideo"/>
             </div>
 
             <div className="form-control mb-4 ">
@@ -442,7 +445,8 @@ export default function PlacesFormPage (){
             </div>
             <div className="form-control mb-4 ">
                 {preInput('Property Price','the price of your property')}
-                <select onChange={e => setCurrency(e.target.value)}>
+                <div className="flex">
+                <select className="w-24" onChange={e => setCurrency(e.target.value)}>
                     {currencies.length > 0 && currencies.map((tender, index) => (
                             <option key={index} value={tender}>{tender}</option>
                         ))}
@@ -450,6 +454,7 @@ export default function PlacesFormPage (){
                 <input type="number" value={price} onChange={e=>setPrice(e.target.value)}required
                 className="border-b-2 border-gray-300 w-full py-1 px-3 text-base focus:outline-none">
                 </input>
+                </div>
             </div>
 
             <button className="primary my-4 max-w-10">Save</button>
