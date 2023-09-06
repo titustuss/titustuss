@@ -92,14 +92,18 @@ export default function PlacePage(){
                     Show more
                 </button>
             </div>
-            <div className="my-4 ">
+            <div className="my-4 flex">
+                <div>
                 <h2 className="font-semibold font-body text-2xl">Description</h2>
-                {place.description}   {place.youtube}
+                {place.description}
+                </div>
+                <div >
+                    {place.price}
+                </div>
                 
             </div>
   
             <div className="grid sm:grid-cols-2 gap-4 mt-5">
-                <div>
                 {place.perks.length > 0 && (
                     <div className="flex flex-wrap">
                     <h2 className="font-gray-800 font-body text-2xl mb-2 w-full">Perks</h2>
@@ -112,25 +116,25 @@ export default function PlacePage(){
                     </div>
 
                 )}
-                </div>
+
 
                 <div className="my-4 mx-auto bg-white p-4 rounded-lg shadow-lg mb-3 max-w-sm">
                     <h1 className="font-semibold text-secondary font-body text-2xl mb-4">Contact us</h1>
-                    <a href={`tel:${place.contact}`} className="flex items-center mb-2">
+                    <a href={`tel:${place.contactCode.split("+")[1]}${place.contact}`} className="flex items-center mb-2">
                         <span className="mr-2">({place.contactCode}) {place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/phone.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800 hover:text-green-700">PHONE</h1>
                         </div>
                     </a>
-                    <a href={`sms:${place.contact}`} className="flex items-center mb-2">
+                    <a href={`sms:${place.contactCode.split("+")[1]}${place.contact}`} className="flex items-center mb-2">
                         <span className="mr-2">({place.contactCode}) {place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/message.svg'} alt="" className="w-6 h-6 mr-2" />
                             <h1 className="text-md font-medium text-gray-800 hover:text-blue-600">MESSAGE</h1>
                         </div>
                     </a>
-                    <a href={`https://wa.me/${place.contact}`} target="_blank" rel="noopener noreferrer" className="flex items-center mb-2">
+                    <a href={`https://wa.me/${place.contactCode.split("+")[1]}${place.contact}`} target="_blank" rel="noopener noreferrer" className="flex items-center mb-2">
                         <span className="mr-2">({place.contactCode}) {place.contact}</span>
                         <div className="p-2 flex items-center">
                             <img src={'http://localhost:5173/whatsapp.svg'} alt="" className="w-6 h-6 mr-2" />
@@ -167,17 +171,17 @@ export default function PlacePage(){
                 </div>
                 )}
 
-            {place.youtube && (
-            <div className="embed-responsive embed-responsive-1by1 relative w-full h-80 overflow-hidden">
-            <iframe
-                className="bottom-0 left-0 right-0 top-0 h-full w-full"
-                src={`https://www.youtube.com/embed/${extractVideoId(place.youtube)}`} // Replace with the function to extract the video ID
-                allowfullscreen=""
-                id="240632615"
-            >
-            </iframe>
-            </div>
-            )}           
+                    {place.youtube && (
+                    <div className="embed-responsive embed-responsive-1by1 relative w-full h-80 overflow-hidden">
+                    <iframe
+                        className="bottom-0 left-0 right-0 top-0 h-full w-full"
+                        src={`https://www.youtube.com/embed/${extractVideoId(place.youtube)}`} // Replace with the function to extract the video ID
+                        allowfullscreen=""
+                        id="240632615"
+                    >
+                    </iframe>
+                    </div>
+                    )}           
 
             </div>
 
