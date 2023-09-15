@@ -44,8 +44,10 @@ return (
           <div className="mt-3 flex justify-between">
               <div>
               <h4 className="pb-0">{place.category}</h4>
-              <h2 className="font-bold font-body text-xl truncate ">{place.title}</h2>
-              <h3 className="font-body">{place.address}</h3>
+              <h2 className="font-bold font-body text-xl" style={{ width: '14ch', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {place.title}
+              </h2>
+              <h3 className="font-body" style={{ width: '14ch', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{place.address}</h3>
               </div>
               <div className=" flex gap-1 font-semibold text-secondary right-0 mr-6">
                 <div>
@@ -61,7 +63,7 @@ return (
       </span>
     ))}
   </div>
-      <div>
+      <div className="md-auto">
       {places.length > 0 && (
               <div className="flex gap-2 mt-3 flex-wrap">
                 <button

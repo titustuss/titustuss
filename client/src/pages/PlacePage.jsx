@@ -37,7 +37,7 @@ export default function PlacePage(){
                 </div>
             {place?.photos?.length > 0 && place.photos.map(photo =>(
                 <div className="flex justify-center items-center h-full">
-                <img  className="w-full h-[100%] object-cover" src={photo} alt="" />
+                <img  className="w-full sm:w-[80%] h-[100%] object-cover" src={photo} alt="" />
                 </div>
             ))}
             </div>
@@ -53,7 +53,7 @@ export default function PlacePage(){
       
     return(
     <div className="flex flex-col items-center justify-center pb-8">
-        <div className="max-w-screen-xl px-8 py-5 mt-10 bg-gray-100">
+        <div className="max-w-screen-xl px-2 py-5 mt-10 bg-gray-100">
             <h1 className="font-semibold font-body text-3xl">{place.title}</h1>
             <a className="flex gap-1 my-2 font-semibold underline" target="_blank" href={`https://maps.google.com/?q=${encodeURIComponent(place.address)}`}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -92,27 +92,34 @@ export default function PlacePage(){
                     Show more
                 </button>
             </div>
-            <div className="my-4 flex">
+            <div className="my-4">
                 <div>
                 <h2 className="font-semibold font-body text-2xl">Description</h2>
                 {place.description}
                 </div>
-                <div >
-                    {place.price}
+                <div className="my-10 ">
+                <h2 className="font-semibold font-body text-2xl">Price</h2>
+                <div className="text-xl font-bold text-secondary">
+                {place.currency.split("-")[1]} {place.price}
+                </div>
                 </div>
                 
             </div>
   
             <div className="grid sm:grid-cols-2 gap-4 mt-5">
                 {place.perks.length > 0 && (
+                    <div className="sm:w-96 ">
+                    <h2 className="font-gray-800 font-body text-2xl mb-10">Perks</h2>
                     <div className="flex flex-wrap">
-                    <h2 className="font-gray-800 font-body text-2xl mb-2 w-full">Perks</h2>
                     {place.perks.map((perk, index) => (
-                        <div key={index} className="flex items-center p-3 w-1/2">
-                        <img src={'http://localhost:5173/' + perk + '.svg' } alt={perk.name} className="w-8 h-8 mr-2" />
+                        <div key={index} className="w-1/2 p-3">
+                        <div className="flex items-center justify-center flex-col">
+                        <img src={'http://localhost:5173/' + perk + '.svg' } alt={perk.name} className="w-8 h-8 " />
                         <span>{perk}</span>
                         </div>
+                        </div>
                     ))}
+                    </div>
                     </div>
 
                 )}
@@ -160,7 +167,7 @@ export default function PlacePage(){
                     className="flex flex-col space-y-1 truncate"
                     
                     >
-                    <div className="font-semibold text-secondary">
+                    <div className=" text-2xl font-bold text-secondary">
                         {place.title}
                     </div>
                     <div className="text-primary hover:underline">

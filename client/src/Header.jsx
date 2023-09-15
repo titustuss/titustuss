@@ -130,9 +130,6 @@ export default function Header({category, setCategoryValue, searchInput, setSear
                   <h1>Advertise</h1>
                 </Link>
               </li>
-              <li>
-                <h1>Logout</h1>
-              </li>
             </ul>
               </div>
             </div>
