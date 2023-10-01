@@ -100,7 +100,7 @@ export default function PlacePage(){
                 <div className="my-10 ">
                 <h2 className="font-semibold font-body text-2xl">Price</h2>
                 <div className="text-xl font-bold text-secondary">
-                {place.currency.split("-")[1]} {place.price}
+                {place.currency} {place.price}
                 </div>
                 </div>
                 

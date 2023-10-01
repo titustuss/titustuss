@@ -28,7 +28,7 @@ export default function Header({category, setCategoryValue, searchInput, setSear
   <div className="flex items-center justify-center">
     <div className="w-full mx-auto">
       {/* the logo */}
-      <header className='flex flex-col sm:flex-row sm:justify-between items-center flex-wrap sm:flex-nowrap'>
+      <header className='flex flex-col sm:flex-row sm:justify-between items-center flex-wrap '>
       <div className="flex flex-col justify-center sm:ml-2">
         <Link to={'/'} className='flex flex-col items-center gap-1'>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8 -rotate-90">
@@ -111,8 +111,8 @@ export default function Header({category, setCategoryValue, searchInput, setSear
                 </Link>
               </li>
               <li>
-                <Link to="/login" onClick={handleMenuItemClick}>
-                  <h1>Login</h1>
+                <Link to={user ? "" : '/login'} onClick={handleMenuItemClick}>
+                  <h1>{user ? '' : 'Login'}</h1>
                 </Link>
               </li>
               <li>
