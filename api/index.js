@@ -5,13 +5,15 @@ const bcrypt = require('bcryptjs');
 const jwt =require('jsonwebtoken');
 const User =require('./models/User.js')
 const Place = require ('./models/Place.js')
+const Payment = require ('./models/Payment.js');
 const cookieParser = require('cookie-parser');
 const imageDownloader =require('image-downloader');
-const path = require('path');
+const path = require('path'); 
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const compression = require('compression');
 const {cloudinary} = require('./utils/cloudinary.js');
+const axios = require('axios');
 
 
 require('dotenv').config();
@@ -217,6 +219,102 @@ app.delete('/places/:id', async (req, res) => {
 
   app.get('/places', async (req,res)=>{
     res.json( await Place.find())
+  })
+
+  // app.get("/token",(req,res)=>{
+  //   generateToken()
+  // })
+
+  // middleware to generate token
+  const generateToken = async (req,res,next)=>{
+    const secret= process.env.M_SECRET_KEY;
+    const consumer = process.env.M_CONSUMER_KEY;
+    const auth = new Buffer.from(`${consumer}:${secret}`).toString('base64')
+
+    await axios.get('https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials', {
+      headers: {
+        authorization: `Basic ${auth}`,
+      }
+    }).then((response)=>{
+      // console.log(response.data.access_token)
+      token = response.data.access_token;
+      next();
+    }).catch((err)=>{
+      console.log(err);
+    })
+  }
+
+  app.post('/stk', generateToken, async (req, res) => {
+    const phone = req.body.phone.substring(1);
+    const amount = req.body.amount;
+
+    const date = new Date();
+    const timestamp = date .getFullYear() + 
+    ("0" + (date.getMonth() + 1)).slice(-2) +
+    ("0" + date.getDate()).slice(-2) +
+    ("0" + date.getHours()).slice(-2) +
+    ("0" + date.getMinutes()).slice(-2) +
+    ("0" + date.getSeconds()).slice(-2);
+
+    const shortcode = process.env.M_PAYBILL;
+    const passkey = process.env.PASSKEY;
+    const password= new Buffer.from(shortcode + passkey +timestamp).toString('base64')
+    
+    await axios.post(
+      "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",
+      {
+        BusinessShortCode: shortcode,
+        Password: password,
+        Timestamp: timestamp,
+        TransactionType: "CustomerPayBillOnline",
+        Amount: amount,
+        PartyA: `254${phone}`,
+        PartyB: shortcode,
+        PhoneNumber: `254${phone}`,
+        CallBackURL: "https://d469-197-136-156-40.ngrok-free.app/callback",
+        AccountReference: "ONA PROPERTIES",
+        TransactionDesc: "Test"
+      },
+      {
+        headers: {
+          authorization: `Bearer ${token}`,
+        }
+      }
+    ).then((response)=>{
+      // console.log(response.data)
+      res.status(200).json(response.data)
+    }).catch((err)=>{
+      console.log(err.message)
+      res.status(400).json(err.message)
+    })
+  });
+  
+  app.post("/callback", (req,res)=>{
+    const callbackData = req.body;
+    console.log(callbackData)
+    if(!callbackData.Body.stkCallback.CallbackMetadata){
+      console.log(callbackData)
+      res.json("OK")
+    }
+    console.log(callbackData.Body.stkCallback.CallbackMetadata)
+
+    const phone=callbackData.Body.stkCallback.CallbackMetadata.Item[4].Value
+    const amount= callbackData.Body.stkCallback.CallbackMetadata.Item[0].Value;
+    const trnx_id=callbackData.Body.stkCallback.CallbackMetadata.Item[1].Value;
+
+    console.log({phone, amount,trnx_id})
+
+    const payment = Payment();
+
+    payment.number =phone;
+    payment.amount =amount;
+    payment.trnx_id =trnx_id;
+    
+    payment.save().then((data)=>{
+      console.log({message:"saved the data", data})
+    }).catch((err)=>{
+      console.log(err.message)
+    })
   })
 
   app.listen(4000, () => {
