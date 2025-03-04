@@ -2,7 +2,7 @@
 
 <!--
 **titustuss/titustuss** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
-
+<h2 align="center">Hello Earthlings<img src="https://media.giphy.com/media/hvRJCLFzcasrR4ia7z/giphy.gif" alt="Hello Earthlings" width="28" /></h2>
 Here are some ideas to get you started:
 
 - 🔭 I’m currently working on ...
